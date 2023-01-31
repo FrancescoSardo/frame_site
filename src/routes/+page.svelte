@@ -6,40 +6,33 @@
   import { onMount } from "svelte";
 
   let page = 0;
-
-  let page1: HTMLElement;
-  let page2: HTMLElement;
-  let page3: HTMLElement;
-  let page4: HTMLElement;
+  const pages = 4;
   
-  let content1: HTMLElement;
-  let content2: HTMLElement;
-  let content3: HTMLElement;
-  let content4: HTMLElement;
+  let snap_elements: { [key: number]: HTMLElement } = {};
+  let content_elements: { [key: number]: HTMLElement } = {};
 
   onMount(() => {
+    for(let i = 0; i < pages; i++) {
+      let element: HTMLElement | null = document.querySelector(`.content${i + 1}`);
+      if(element) { content_elements[i] = element;  }
+    }
+
+    for(let i = 0; i < pages; i++) {
+      let element: HTMLElement | null = document.querySelector(`#snap${i}`);
+      if(element) { snap_elements[i] = element;  }
+    }
+    
     active_page.subscribe((value) => {
       page = value;
-
-      if (page == 0) {
-        content1.scrollIntoView({ behavior: "smooth" });
-      } else if (page == 1) {
-        content2.scrollIntoView({ behavior: "smooth" });
-      } else if (page == 2) {
-        content3.scrollIntoView({ behavior: "smooth" });
-      } else if (page == 3) {
-        content4.scrollIntoView({ behavior: "smooth" });
-      }
+      
+      content_elements[page]?.scrollIntoView({ behavior: "smooth"});
     });
 
     let observer = new IntersectionObserver(
       function (entries) {
-        // isIntersecting is true when element and viewport are overlapping
-        // isIntersecting is false when element and viewport don't overlap
-
         for(let i = 0; i < entries.length; i++) {
           if(entries[i].isIntersecting) {
-            let value = entries[i].target.id.charAt(1);
+            let value = entries[i].target.id.charAt(4);
             setActivePage(Number.parseInt(value));
           }
         }
@@ -47,63 +40,59 @@
       },
       { threshold: [0.5] }
     );
-
-    observer.observe(page1);
-    observer.observe(page2);
-    observer.observe(page3);
-    observer.observe(page4);
+    
+    for(let snap_element of Object.values(snap_elements)) {
+      observer.observe(snap_element);
+    }
   });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="product">
   <div class="content-container">
-    <div bind:this={content1} class="content1" />
-    <div bind:this={content2} class="content2" />
-    <div bind:this={content3} class="content3" />
-    <div bind:this={content4} class="content4" />
+    <div class="content1" />
+    <div class="content2" />
+    <div class="content3" />
+    <div class="content4" />
+  </div>
+  <div class="scroll-container">
+    <div class="snap" id="snap0" />
+    <div class="snap" id="snap1" />
+    <div class="snap" id="snap2" />
+    <div class="snap" id="snap3" />
   </div>
   <div class="left-navbar">
     <div
-      class={page == 0 ? "circle active" : "circle"}
+      class={page == 0 ? "nav-btn circle active" : "nav-btn circle"}
       on:click={() => {
         setActivePage(0);
-        page1.scrollIntoView();
+        content_elements[0]?.scrollIntoView({ behavior: "smooth"});
       }}
     />
     <div
-      class={page == 1 ? "circle active" : "circle"}
+      class={page == 1 ? "nav-btn circle active" : "nav-btn circle"}
       on:click={() => {
         setActivePage(1);
-        page2.scrollIntoView();
+        content_elements[1]?.scrollIntoView({ behavior: "smooth"});
       }}
     />
     <div
-      class={page == 2 ? "circle active" : "circle"}
+      class={page == 2 ? "nav-btn circle active" : "nav-btn circle"}
       on:click={() => {
         setActivePage(2);
-        page3.scrollIntoView();
+        content_elements[2]?.scrollIntoView({ behavior: "smooth"});
       }}
     />
     <div
-      class={page == 3 ? "shop   active" : "shop"}
+      class={page == 3 ? "nav-btn shop   active" : "nav-btn shop"}
       on:click={() => {
         setActivePage(3);
-        page4.scrollIntoView();
+        content_elements[3]?.scrollIntoView({ behavior: "smooth"});
       }}
     >
-      <img
-        src="	https://cdn.iconscout.com/icon/free/png-512/shopping-cart-1779478-1513173.png?w=256&f=avif"
-        alt=""
-      />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
     </div>
     <!--   -->
-  </div>
-  <div class="scroll-container">
-    <div bind:this={page1} class="snap" id="p0" />
-    <div bind:this={page2} class="snap" id="p1" />
-    <div bind:this={page3} class="snap" id="p2" />
-    <div bind:this={page4} class="snap" id="p3" />
   </div>
 </div>
 
@@ -156,50 +145,56 @@
       justify-content: space-evenly;
       align-items: center;
 
-      .circle {
+      .nav-btn {
         width: 1rem;
         height: 1rem;
-        border-radius: 50%;
-        border: solid 5px black;
+        border-radius: 0.5rem;
         cursor: pointer;
+        box-sizing: border-box;
+
+        transition: background 0.5s ease, width 0.5s ease, height 0.5s ease;
+      }
+
+      .circle {
+        border: solid 3px black;
       }
 
       .circle.active {
-        background-color: black;
+        background-color: white;
+        width: 2rem;
       }
 
-      .circle:hover {
+      .circle:not(.active):hover {
         transition: all 0.5s ease;
-        background-color: black;
+        background-color: rgba(0, 0, 0, 0.5);
       }
 
       .shop {
-        width: 1.5rem;
-        height: 1.5rem;
-        border-radius: 50%;
-        border: solid 5px black;
-        cursor: pointer;
+        width: 1.8rem;
+        height: 1.8rem;
         display: flex;
         justify-content: center;
         align-items: center;
 
-        img {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
+        padding: 0.2rem;
 
-        &:hover {
-          transition: all 0.5s ease;
-          background-color: black;
+        box-sizing: border-box;
+
+        border: solid 3px transparent;
+
+        svg {
+          width: 100%;
+          width: 100%;
         }
       }
 
-      .shop.active {
-        background-color: black;
+      .shop:not(.active):hover {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
 
-        img {
-          filter: invert(1);
-        }
+      .shop.active {
+        background-color: white;
+        border: solid 3px black;
       }
     }
 
