@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  font-family: 'Montserrat';
 }
 
 :root {
@@ -12,5 +11,11 @@ body {
 
 * {
   font-family: 'Montserrat', sans-serif;
-  
+
+  // scroll-snap-align: start; 
+  // scroll-behavior: smooth;
+  // scroll-snap-type: y mandatory;
+  // scrollbar-width: none;
+  scrollbar-width: none;
+  // scroll-snap-align: start; 
 }
