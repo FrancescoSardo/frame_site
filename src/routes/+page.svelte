@@ -72,7 +72,7 @@
     // const cube = new Mesh( geometry, material );
     // scene.add( cube );
     
-    loader.loadAsync('cranio').then((object) => {
+    loader.loadAsync('https://github.com/FrancescoSardo/frame_site/blob/main/static/craneo.OBJ').then((object) => {
       scene.add(object);
     });
 
