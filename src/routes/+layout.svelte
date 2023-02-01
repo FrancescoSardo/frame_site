@@ -19,14 +19,13 @@
 </div>
 
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { background_split } from '$lib/stores/bg_store';
   import '../styles/global.scss'
-  import { scroll_offset } from '../lib/stores/scroll_store';
-  
+
   let leftWidth = 70;
 
-  scroll_offset.subscribe((offset) => {
-    
+  background_split.subscribe((amount) => {
+    leftWidth = amount;
   })
 </script>
 
@@ -40,7 +39,7 @@
     width: 100vw;
 
     // flex-direction: column;
-    grid-template-rows: 6rem 1fr;
+    grid-template-rows: var(--navbar-height) 1fr;
   }
 
   .background {
@@ -55,18 +54,17 @@
     
     .left {
       background-color: var(--color-2);
+      transition: flex 1s ease-in-out;
     }
 
     .right {
       background-color: var(--color-1);
+      transition: flex 1s ease-in-out;
     }
   }
 
   .content {
     grid-row: 2;
-    // display: flex;
-
-    // overflow-y: scroll;
   }
 
   .navbar {

@@ -3,46 +3,55 @@
     active_page,
     setActivePage,
   } from "$lib/stores/active_page";
+    import { setBackgroundSplit } from "$lib/stores/bg_store";
   import { onMount } from "svelte";
 
   let page = 0;
-  const pages = 4;
-  
-  let snap_elements: { [key: number]: HTMLElement } = {};
-  let content_elements: { [key: number]: HTMLElement } = {};
+  let pages = 0;
+
+  let canvas_container: HTMLElement;
+
+  const product_page_data: {
+    bg_split: number;
+    canvas_position: { x: number; y: number; };
+  }[] = [{
+    bg_split: 70,
+    canvas_position: { x: 0.8, y: 0.3 }
+  }, {
+    bg_split: 30,
+    canvas_position: { x: 0.3, y: 0.4 }
+  }, {
+    bg_split: 50,
+    canvas_position: { x: 0.3, y: 0.8 }
+  }]
 
   onMount(() => {
-    for(let i = 0; i < pages; i++) {
-      let element: HTMLElement | null = document.querySelector(`.content${i + 1}`);
-      if(element) { content_elements[i] = element;  }
-    }
-
-    for(let i = 0; i < pages; i++) {
-      let element: HTMLElement | null = document.querySelector(`#snap${i}`);
-      if(element) { snap_elements[i] = element;  }
-    }
-    
     active_page.subscribe((value) => {
       page = value;
-      
-      content_elements[page]?.scrollIntoView({ behavior: "smooth"});
+
+      setBackgroundSplit(product_page_data[page].bg_split);
+
+      canvas_container.style.setProperty("--x-position", product_page_data[page].canvas_position.x.toString());
+      canvas_container.style.setProperty("--y-position", product_page_data[page].canvas_position.y.toString());
     });
 
+    let elements = document.querySelectorAll(".product-page");
+    pages = elements.length;
+
     let observer = new IntersectionObserver(
-      function (entries) {
-        for(let i = 0; i < entries.length; i++) {
-          if(entries[i].isIntersecting) {
-            let value = entries[i].target.id.charAt(4);
+      (entries) => {
+        for(let entry of entries) {
+          if(entry.isIntersecting) {
+            let value = entry.target.id.charAt(4);
             setActivePage(Number.parseInt(value));
           }
         }
-          
       },
       { threshold: [0.5] }
     );
     
-    for(let snap_element of Object.values(snap_elements)) {
-      observer.observe(snap_element);
+    for(let element of elements) {
+      observer.observe(element);
     }
   });
 </script>
@@ -50,49 +59,12 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="product">
   <div class="content-container">
-    <div class="content1" />
-    <div class="content2" />
-    <div class="content3" />
-    <div class="content4" />
+    {#each Array(product_page_data.length).fill(0) as _, i}
+      <div class={`product-page c${i}`} id={`page${i}`} />
+    {/each}
   </div>
-  <div class="scroll-container">
-    <div class="snap" id="snap0" />
-    <div class="snap" id="snap1" />
-    <div class="snap" id="snap2" />
-    <div class="snap" id="snap3" />
-  </div>
-  <div class="left-navbar">
-    <div
-      class={page == 0 ? "nav-btn circle active" : "nav-btn circle"}
-      on:click={() => {
-        setActivePage(0);
-        content_elements[0]?.scrollIntoView({ behavior: "smooth"});
-      }}
-    />
-    <div
-      class={page == 1 ? "nav-btn circle active" : "nav-btn circle"}
-      on:click={() => {
-        setActivePage(1);
-        content_elements[1]?.scrollIntoView({ behavior: "smooth"});
-      }}
-    />
-    <div
-      class={page == 2 ? "nav-btn circle active" : "nav-btn circle"}
-      on:click={() => {
-        setActivePage(2);
-        content_elements[2]?.scrollIntoView({ behavior: "smooth"});
-      }}
-    />
-    <div
-      class={page == 3 ? "nav-btn shop   active" : "nav-btn shop"}
-      on:click={() => {
-        setActivePage(3);
-        content_elements[3]?.scrollIntoView({ behavior: "smooth"});
-      }}
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-    </div>
-    <!--   -->
+  <div bind:this={canvas_container} class="canvas-container">
+    <div class="canvas-point" />
   </div>
 </div>
 
@@ -104,112 +76,80 @@
     display: grid;
     grid-template-columns: 5rem 1fr;
     grid-template-rows: 1fr;
-    
-    .content-container{
-      grid-column: 1 / 3;
-      grid-row: 1;
 
-      overflow-y: hidden;
-      
-      .content1{
-        height: 100%;
-        width: 100%;
-        background-color: yellow;
-      }
+    .canvas-container {
+      --x-position: 0.5;
+      --y-position: 0.5;
 
-      .content2{
-        height: 100%;
-        width: 100%;
-        background-color: wheat;
-      }
+      pointer-events: none;
+      position: absolute;
+      top: var(--navbar-height);
+      left: 0;
 
-      .content3{
-        height: 100%;
-        width: 100%;
-        background-color: aqua;
-      }
+      height: calc(100vh - var(--navbar-height));
+      width: 100vw;
 
-      .content4{
-        height: 100%;
-        width: 100%;
-        background-color: purple;
-      }
-    }
+      box-sizing: border-box;
 
-    .left-navbar {
-      grid-column: 1;
-      grid-row: 1;
+      padding-left: calc(100vw * var(--x-position));
+      padding-top:  calc((100vh - var(--navbar-height)) * var(--y-position));
 
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      align-items: center;
+      transition: padding-left 1s ease-in-out, padding-top 1s ease;
 
-      .nav-btn {
+      .canvas-point {
         width: 1rem;
         height: 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        box-sizing: border-box;
 
-        transition: background 0.5s ease, width 0.5s ease, height 0.5s ease;
-      }
-
-      .circle {
-        border: solid 3px black;
-      }
-
-      .circle.active {
-        background-color: white;
-        width: 2rem;
-      }
-
-      .circle:not(.active):hover {
-        transition: all 0.5s ease;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-
-      .shop {
-        width: 1.8rem;
-        height: 1.8rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        padding: 0.2rem;
-
-        box-sizing: border-box;
-
-        border: solid 3px transparent;
-
-        svg {
-          width: 100%;
-          width: 100%;
-        }
-      }
-
-      .shop:not(.active):hover {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
-
-      .shop.active {
-        background-color: white;
-        border: solid 3px black;
+        background-color: red;
+        border-radius: 50%;
       }
     }
-
-    .scroll-container {
+  
+    .content-container {
       grid-column: 1 / 3;
       grid-row: 1;
-
-      height: 100%;
 
       overflow-y: scroll;
 
-      .snap {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      
+
+      .product-page {
         height: 100%;
-        // border: solid 5px black;
-        box-sizing: border-box;
+        width: 100%;
+
+        transition: opacity 1s;
+        
+        scroll-snap-align: start;
+
+        &.c0 {
+          // background-color: red;
+        }
+
+        &.c1 {
+          // background-color: blue;
+        }
+
+        &.c2 {
+          // background-color: green;
+        }
+
+        &.c3 {
+          // background-color: yellow;
+        }
+
+        &.c4 {
+          // background-color: purple;
+        }
+
+        &.c5 {
+          // background-color: orange;
+        }
+
+        &.c6 {
+          // background-color: black;
+        }
       }
     }
   }
