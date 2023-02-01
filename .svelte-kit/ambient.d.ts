@@ -57,6 +57,8 @@ declare module '$env/static/private' {
 	export const npm_node_execpath: string;
 	export const npm_package_dependencies_locomotive_scroll: string;
 	export const npm_package_dependencies_sass: string;
+	export const npm_package_dependencies_svelte_cubed: string;
+	export const npm_package_dependencies_three: string;
 	export const npm_package_devDependencies_svelte: string;
 	export const npm_package_devDependencies_svelte_check: string;
 	export const npm_package_devDependencies_tslib: string;
@@ -64,6 +66,7 @@ declare module '$env/static/private' {
 	export const npm_package_devDependencies_vite: string;
 	export const npm_package_devDependencies__sveltejs_adapter_auto: string;
 	export const npm_package_devDependencies__sveltejs_kit: string;
+	export const npm_package_devDependencies__types_three: string;
 	export const npm_package_name: string;
 	export const npm_package_private: string;
 	export const npm_package_scripts_build: string;
@@ -169,6 +172,8 @@ declare module '$env/dynamic/private' {
 		npm_node_execpath: string;
 		npm_package_dependencies_locomotive_scroll: string;
 		npm_package_dependencies_sass: string;
+		npm_package_dependencies_svelte_cubed: string;
+		npm_package_dependencies_three: string;
 		npm_package_devDependencies_svelte: string;
 		npm_package_devDependencies_svelte_check: string;
 		npm_package_devDependencies_tslib: string;
@@ -176,6 +181,7 @@ declare module '$env/dynamic/private' {
 		npm_package_devDependencies_vite: string;
 		npm_package_devDependencies__sveltejs_adapter_auto: string;
 		npm_package_devDependencies__sveltejs_kit: string;
+		npm_package_devDependencies__types_three: string;
 		npm_package_name: string;
 		npm_package_private: string;
 		npm_package_scripts_build: string;

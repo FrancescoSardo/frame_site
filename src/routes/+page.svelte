@@ -3,13 +3,17 @@
     active_page,
     setActivePage,
   } from "$lib/stores/active_page";
-    import { setBackgroundSplit } from "$lib/stores/bg_store";
+  import { setBackgroundSplit } from "$lib/stores/bg_store";
   import { onMount } from "svelte";
+  import { MeshStandardMaterial, ObjectLoader, PointLight } from "three";
+  import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh, Color } from 'three';
+  // import { GLTFLoader as Loader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+  import { OBJLoader as Loader } from 'three/examples/jsm/loaders/OBJLoader.js'
 
   let page = 0;
   let pages = 0;
 
-  let canvas_container: HTMLElement;
+  let render_container: HTMLDivElement;
 
   const product_page_data: {
     bg_split: number;
@@ -31,8 +35,8 @@
 
       setBackgroundSplit(product_page_data[page].bg_split);
 
-      canvas_container.style.setProperty("--x-position", product_page_data[page].canvas_position.x.toString());
-      canvas_container.style.setProperty("--y-position", product_page_data[page].canvas_position.y.toString());
+      render_container.style.setProperty("--x-position", product_page_data[page].canvas_position.x.toString());
+      render_container.style.setProperty("--y-position", product_page_data[page].canvas_position.y.toString());
     });
 
     let elements = document.querySelectorAll(".product-page");
@@ -53,6 +57,44 @@
     for(let element of elements) {
       observer.observe(element);
     }
+
+    let loader = new Loader();
+  
+    const scene = new Scene();
+
+    const camera = new PerspectiveCamera( 75, render_container.clientWidth / render_container.clientHeight, 0.1, 2000 );
+    const renderer = new WebGLRenderer({ alpha: true });
+    renderer.setClearColor( 0x000000, 0 );
+    renderer.setSize( render_container.clientWidth, render_container.clientHeight );
+
+    // const geometry = new BoxGeometry( 1, 1, 1 );
+    // const material = new MeshStandardMaterial( { color: 0x00ff00 } );
+    // const cube = new Mesh( geometry, material );
+    // scene.add( cube );
+    
+    loader.loadAsync('cranio').then((object) => {
+      scene.add(object);
+    });
+
+    camera.position.z = 1200;
+
+    // add point light
+    const pointLight = new PointLight(0xffffff, 1, 1000);
+    pointLight.position.set(1000, 0, 1200);
+    scene.add(pointLight);
+
+    render_container.appendChild( renderer.domElement );
+
+    function animate() {
+      requestAnimationFrame( animate );
+
+      // cube.rotation.x += 0.01;
+      // cube.rotation.y += 0.01;
+
+      renderer.render( scene, camera );
+    }
+
+    animate();
   });
 </script>
 
@@ -63,8 +105,8 @@
       <div class={`product-page c${i}`} id={`page${i}`} />
     {/each}
   </div>
-  <div bind:this={canvas_container} class="canvas-container">
-    <div class="canvas-point" />
+  <div class="canvas-container">
+    <div bind:this={render_container} class="render-container" />
   </div>
 </div>
 
@@ -78,8 +120,6 @@
     grid-template-rows: 1fr;
 
     .canvas-container {
-      --x-position: 0.5;
-      --y-position: 0.5;
 
       pointer-events: none;
       position: absolute;
@@ -91,17 +131,23 @@
 
       box-sizing: border-box;
 
-      padding-left: calc(100vw * var(--x-position));
-      padding-top:  calc((100vh - var(--navbar-height)) * var(--y-position));
+      .render-container {
+        --x-position: 0.5;
+        --y-position: 0.5;
 
-      transition: padding-left 1s ease-in-out, padding-top 1s ease;
+        position: relative;
 
-      .canvas-point {
-        width: 1rem;
-        height: 1rem;
+        left: calc(100vw * var(--x-position) - 256px);
+        top:  calc((100vh - var(--navbar-height)) * var(--y-position) - 256px);
 
-        background-color: red;
-        border-radius: 50%;
+        width: 512px;
+        height: 512px;
+
+        // background-color: red;
+        
+        // border: 1px solid black;
+
+        transition: left 1s ease-in-out, top 1s ease;
       }
     }
   
