@@ -5,15 +5,17 @@
   } from "$lib/stores/active_page";
   import { setBackgroundSplit } from "$lib/stores/bg_store";
   import { onMount } from "svelte";
-  import { MeshStandardMaterial, ObjectLoader, PointLight } from "three";
+  import { MeshStandardMaterial, Object3D, ObjectLoader, PointLight } from "three";
   import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh, Color } from 'three';
-  // import { GLTFLoader as Loader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-  import { OBJLoader as Loader } from 'three/examples/jsm/loaders/OBJLoader.js'
+  import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+  import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 
   let page = 0;
   let pages = 0;
 
   let render_container: HTMLDivElement;
+
+  let item: Object3D;
 
   const product_page_data: {
     bg_split: number;
@@ -58,7 +60,8 @@
       observer.observe(element);
     }
 
-    let loader = new Loader();
+    // let loader = new OBJLoader();
+    let loader = new GLTFLoader();
   
     const scene = new Scene();
 
@@ -72,15 +75,21 @@
     // const cube = new Mesh( geometry, material );
     // scene.add( cube );
     
-    loader.loadAsync('https://github.com/FrancescoSardo/frame_site/blob/main/static/craneo.OBJ').then((object) => {
-      scene.add(object);
-    });
+    // loader.load('/craneo.OBJ', (obj) => {
+    //   item = obj;
+    //   scene.add(obj)
+    // })
 
-    camera.position.z = 1200;
+    loader.load('/models/craneo1/scene.gltf', (obj) => {
+      item = obj.scene;
+      scene.add(obj.scene)
+    })
+
+    camera.position.z = 3;
 
     // add point light
     const pointLight = new PointLight(0xffffff, 1, 1000);
-    pointLight.position.set(1000, 0, 1200);
+    pointLight.position.set(0, 0, 3);
     scene.add(pointLight);
 
     render_container.appendChild( renderer.domElement );
@@ -90,6 +99,11 @@
 
       // cube.rotation.x += 0.01;
       // cube.rotation.y += 0.01;
+
+      if(item) {
+        item.rotation.x += 0.01;
+        item.rotation.y += 0.01;
+      }
 
       renderer.render( scene, camera );
     }
