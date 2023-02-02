@@ -3,23 +3,16 @@
   import { setBackgroundSplit } from "$lib/stores/bg_store";
   import { onMount } from "svelte";
   import {
-    MeshStandardMaterial,
     Object3D,
-    ObjectLoader,
     PointLight,
-  } from "three";
-  import {
     Scene,
     PerspectiveCamera,
     WebGLRenderer,
-    BoxGeometry,
-    MeshBasicMaterial,
-    Mesh,
-    Color,
   } from "three";
   import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
   import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
   import TWEEN, { Easing, Tween } from "@tweenjs/tween.js";
+  import type { PageData } from "./$types";
 
   let page = 0;
   let pages = 0;
@@ -137,6 +130,8 @@
 
     requestAnimationFrame(animate);
   });
+
+  export let data: PageData;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -178,7 +173,7 @@
         position: relative;
 
         left: calc(100vw * var(--x-position) - 256px);
-        top: calc((100vh - var(--navbar-height)) * var(--y-position) - 256px);
+        top:  calc((100vh - var(--navbar-height)) * var(--y-position) - 256px);
 
         width: 512px;
         height: 512px;

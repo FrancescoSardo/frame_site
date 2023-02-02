@@ -6,8 +6,7 @@ body {
   --color-1: #638475;
   --color-2: #ffffff;
   
-
-  --navbar-height: 8rem;
+  --navbar-height: 6rem;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
@@ -15,11 +14,11 @@ body {
 * {
   font-family: 'Montserrat', sans-serif;
 
-  // scroll-snap-align: start; 
-  // scroll-behavior: smooth;
-  // scroll-snap-type: y mandatory;
-  // scrollbar-width: none;
-  // scrollbar-width: none;
-  // scroll-snap-align: start; 
+   scroll-snap-align: start;
+   scroll-behavior: smooth;
+   scroll-snap-type: y mandatory;
+   scrollbar-width: none;
+   scrollbar-width: none;
+   scroll-snap-align: start;
   
 }
