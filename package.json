@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@tweenjs/tween.js": "^18",
 		"locomotive-scroll": "^4.1.4",
 		"sass": "^1.57.1",
 		"svelte-cubed": "^0.2.1",

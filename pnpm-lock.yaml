@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@sveltejs/adapter-auto': ^1.0.0
   '@sveltejs/kit': ^1.0.0
+  '@tweenjs/tween.js': ^18
   '@types/three': ^0.149.0
   locomotive-scroll: ^4.1.4
   sass: ^1.57.1
@@ -15,6 +16,7 @@ specifiers:
   vite: ^4.0.0
 
 dependencies:
+  '@tweenjs/tween.js': 18.6.4
   locomotive-scroll: 4.1.4
   sass: 1.57.1
   svelte-cubed: 0.2.1
@@ -326,6 +328,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@tweenjs/tween.js/18.6.4:
+    resolution: {integrity: sha512-lB9lMjuqjtuJrx7/kOkqQBtllspPIN+96OvTCeJ2j5FEzinoAXTdAMFnDAQT1KVPRlnYfBrqxtqP66vDM40xxQ==}
+    dev: false
 
   /@types/cookie/0.5.1:
     resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
