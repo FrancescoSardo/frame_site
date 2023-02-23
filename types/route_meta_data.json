@@ -1,0 +1,10 @@
+{
+	"/": [],
+	"/shop/[item]": [
+		"src/routes/shop/[item]/+page.ts"
+	],
+	"/tamponi": [],
+	"/tamponi/acquista": [],
+	"/tamponi/confronta": [],
+	"/tamponi/panoramica": []
+}
