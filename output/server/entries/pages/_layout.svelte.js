@@ -1,4 +1,4 @@
-import { c as create_ssr_component, e as escape, b as subscribe, d as add_attribute, v as validate_component } from "../../chunks/index2.js";
+import { c as create_ssr_component, e as escape, b as subscribe, d as add_attribute, v as validate_component } from "../../chunks/index.js";
 import { p as page } from "../../chunks/stores.js";
 /* empty css                                                    */const global = "";
 const css$1 = {

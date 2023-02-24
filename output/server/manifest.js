@@ -4,54 +4,13 @@ export const manifest = {
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {"start":{"file":"_app/immutable/entry/start.1fb94fdb.mjs","imports":["_app/immutable/entry/start.1fb94fdb.mjs","_app/immutable/chunks/index.92760fb2.mjs","_app/immutable/chunks/singletons.2d38a553.mjs","_app/immutable/chunks/paths.19749902.mjs"],"stylesheets":[],"fonts":[]},"app":{"file":"_app/immutable/entry/app.7bebad42.mjs","imports":["_app/immutable/entry/app.7bebad42.mjs","_app/immutable/chunks/index.92760fb2.mjs"],"stylesheets":[],"fonts":[]}},
+		client: {"start":{"file":"_app/immutable/entry/start.eafb571e.mjs","imports":["_app/immutable/entry/start.eafb571e.mjs","_app/immutable/chunks/index.92760fb2.mjs","_app/immutable/chunks/singletons.21b3bc97.mjs"],"stylesheets":[],"fonts":[]},"app":{"file":"_app/immutable/entry/app.e8f5a684.mjs","imports":["_app/immutable/entry/app.e8f5a684.mjs","_app/immutable/chunks/index.92760fb2.mjs"],"stylesheets":[],"fonts":[]}},
 		nodes: [
 			() => import('./nodes/0.js'),
-			() => import('./nodes/1.js'),
-			() => import('./nodes/2.js'),
-			() => import('./nodes/3.js'),
-			() => import('./nodes/4.js'),
-			() => import('./nodes/5.js'),
-			() => import('./nodes/6.js'),
-			() => import('./nodes/7.js'),
-			() => import('./nodes/8.js')
+			() => import('./nodes/1.js')
 		],
 		routes: [
-			{
-				id: "/",
-				pattern: /^\/$/,
-				params: [],
-				page: { layouts: [0], errors: [1], leaf: 4 },
-				endpoint: null
-			},
-			{
-				id: "/shop/[item]",
-				pattern: /^\/shop\/([^/]+?)\/?$/,
-				params: [{"name":"item","optional":false,"rest":false,"chained":false}],
-				page: { layouts: [0,,], errors: [1,2], leaf: 5 },
-				endpoint: null
-			},
-			{
-				id: "/tamponi/acquista",
-				pattern: /^\/tamponi\/acquista\/?$/,
-				params: [],
-				page: { layouts: [0,3], errors: [1,,], leaf: 6 },
-				endpoint: null
-			},
-			{
-				id: "/tamponi/confronta",
-				pattern: /^\/tamponi\/confronta\/?$/,
-				params: [],
-				page: { layouts: [0,3], errors: [1,,], leaf: 7 },
-				endpoint: null
-			},
-			{
-				id: "/tamponi/panoramica",
-				pattern: /^\/tamponi\/panoramica\/?$/,
-				params: [],
-				page: { layouts: [0,3], errors: [1,,], leaf: 8 },
-				endpoint: null
-			}
+			
 		],
 		matchers: async () => {
 			

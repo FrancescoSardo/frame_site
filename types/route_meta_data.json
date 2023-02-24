@@ -1,10 +1,18 @@
 {
-	"/": [],
-	"/shop/[item]": [
-		"src/routes/shop/[item]/+page.ts"
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
 	],
-	"/tamponi": [],
-	"/tamponi/acquista": [],
-	"/tamponi/confronta": [],
-	"/tamponi/panoramica": []
+	"/tamponi": [
+		"src/routes/+layout.ts"
+	],
+	"/tamponi/acquista": [
+		"src/routes/+layout.ts"
+	],
+	"/tamponi/confronta": [
+		"src/routes/+layout.ts"
+	],
+	"/tamponi/panoramica": [
+		"src/routes/+layout.ts"
+	]
 }
