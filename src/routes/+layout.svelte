@@ -1,6 +1,7 @@
 <script lang="ts">
   import "$lib/styles/global.scss";
   import { onMount } from "svelte";
+  import logo from "$lib/assets/logo.svg";
 
   let menu_active = false;
 
@@ -25,7 +26,7 @@
 <div class="layout">
   <div class="navbar" >
     <div class="spacer desktop-only" />
-    <div class="logo"><img src="/assets/logo.svg" /></div>
+    <div class="logo"><img src={logo} /></div>
     <div class="title desktop-only">Frame</div>
     <div class="spacer" />
     <div class="specchietti link desktop-only">

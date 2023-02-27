@@ -6,6 +6,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"deploy": "pnpm run build && gh-pages --dotfiles -d build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
@@ -20,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"gh-pages": "^5.0.0",
 		"sass": "^1.58.3"
 	}
 }

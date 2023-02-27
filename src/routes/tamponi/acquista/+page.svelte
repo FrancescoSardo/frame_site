@@ -1,5 +1,6 @@
 <script lang="ts">
 import ShopButton from "./ShopButton.svelte";
+import render_shark from "$lib/assets/render_shark.png";
 
 type Choice = {
   label: string
@@ -66,7 +67,7 @@ let info: Blocco[] = [{
 <div class="acquista">
   <div class="content">
     <div class="render-container">
-      <img class="render" src="/assets/render_shark.png" alt="">
+      <img class="render" src={render_shark} alt="">
       <div class="galleria link">Galleria</div>
       <div class="info">hai qualche domanda?
         scrivi a questo numero <br> +3987223423</div>
