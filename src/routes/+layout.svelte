@@ -11,8 +11,6 @@
 
       if (element) {
         element.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
-
-        console.log("setVhProperty");
       }
     }
     

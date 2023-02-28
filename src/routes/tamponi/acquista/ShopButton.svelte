@@ -33,6 +33,9 @@ export let cost: number;
 
   font-weight: bolder;
 
+  .label{
+    color: rgb(158, 155, 155);
+  }
   .cost {
     color: rgb(158, 155, 155);
     transition: color 0.3s ease-in-out;
@@ -50,6 +53,9 @@ export let cost: number;
     border: #0071E3 solid 3px;
     color: #0071E3;
 
+    .label{
+      color: #0071E3;
+    }
     .cost {
       color: #0071E3;
     }

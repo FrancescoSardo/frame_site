@@ -1,93 +1,90 @@
 <script lang="ts">
-import ShopButton from "./ShopButton.svelte";
-import render_shark from "$lib/assets/render_shark.png";
+  import ShopButton from "./ShopButton.svelte";
+  import render_shark from "$lib/assets/render_shark.png";
+  import { onMount } from "svelte";
+  import type { PageData } from "./$types";
 
-type Choice = {
-  label: string
-  price: number
-}
+  export let data: PageData;
 
-type Blocco = {
-  description: string
-  choices: Choice[]
-  seleted: number
-}
+  let costo_base = 100;
 
-let costo_base = 100
-let costo_extra = 0
-let price_goal = 0
+  let valore_extra = 0;
+  let valore_corrente = 0;
 
-$: {
-  price_goal = info.reduce((acc, blocco) => {
-    return acc + blocco.choices[blocco.seleted].price
-  }, 0)
-}
+  let updater: NodeJS.Timer | null = null;
+  let timeout: NodeJS.Timeout | null = null;
 
-$: { update_costo_extra(price_goal) }
+  let shop_sections = data.shopinfo.sections;
 
-function update_costo_extra(_: any) {
-  let diff = Math.sign(price_goal - costo_extra)
-  
-  if (diff === 0) return
+  $: {
+    valore_extra = shop_sections.reduce((acc, blocco) => {
+      return acc + blocco.choices[blocco.seleted].price;
+    }, 0);
 
-  let interval = setInterval(() => {
-    costo_extra += diff
+    run_updater(valore_extra);
+  }
 
-    if(diff > 0 && costo_extra >= price_goal) clearInterval(interval)
-    if(diff < 0 && costo_extra <= price_goal) clearInterval(interval)
-  }, 20)
-}
+  function run_updater(_: any) {
+    if (updater) clearInterval(updater);
 
-let info: Blocco[] = [{
-  description: "Incisioni personalizzate",
-  choices: [
-    { label: "No", price: 0 },
-    { label: "Si", price: 20 }
-  ],
-  seleted: 0
-}, {
-  description: "Appendice aerodinamica",
-  choices: [
-    { label: "Squalo", price: 10 },
-    { label: "Dip", price: 30 },
-    { label: "Long", price: 60 }
-  ],
-  seleted: 0
-}, {
-  description: "Modello",
-  choices: [
-    { label: "R6", price: 0 },
-    { label: "Duke", price: 0 },
-    { label: "MT", price: 0 }
-  ],
-  seleted: 0
-}]
+    updater = setInterval(() => {
+      if (valore_corrente === valore_extra) {
+        clearInterval(updater!);
+        updater = null;
+      } else {
+        valore_corrente += Math.sign(valore_extra - valore_corrente);
+      }
+    }, 20);
+
+    if (timeout) clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      if (updater) {
+        clearInterval(updater);
+        updater = null;
+        clearTimeout(timeout!);
+        timeout = null;
+      }
+
+      valore_corrente = valore_extra;
+    }, 1000);
+  }
 </script>
 
 <div class="acquista">
   <div class="content">
     <div class="render-container">
-      <img class="render" src={render_shark} alt="">
+      <img class="render" src={render_shark} alt="" />
       <div class="galleria link">Galleria</div>
-      <div class="info">hai qualche domanda?
-        scrivi a questo numero <br> +3987223423</div>
+      <div class="info">
+        hai qualche <span>domanda?</span>
+        scrivi a questo numero<br /> +3987223423
+      </div>
     </div>
     <div class="form">
       <div class="titolo">Personalizza il tuo componente</div>
-      <div class="sub-titolo">qui puoi scegliere </div>
-      {#each info as blocco, i }
-        <div class="divider"></div>
-        <div class="title">{blocco.description}</div>
-        {#each blocco.choices as choice, index }
+      <div class="sub-titolo">qui puoi scegliere</div>
+      {#each shop_sections as blocco, i}
+        <div class="divider" />
+        <div class="title">{blocco.header}</div>
+        {#each blocco.choices as choice, index}
           <ShopButton
             label={choice.label}
             cost={choice.price}
             selected={blocco.seleted === index}
-            onClick={() => {blocco.seleted = index; info = info}}
+            onClick={() => {
+              blocco.seleted = index;
+              shop_sections = shop_sections;
+            }}
           >
-          {#if i === 0 && choice.label === "Si"}
-            <input maxlength="3" class="incisione-text" type="text" placeholder="Inserisci il testo" />
-          {/if}
+            {#if i === 0 && choice.label === "Si"}
+              <input
+                maxlength="3"
+                class="incisione-text"
+                type="text"
+                placeholder="Inserisci il testo"
+              />
+            {/if}
           </ShopButton>
         {/each}
       {/each}
@@ -100,8 +97,8 @@ let info: Blocco[] = [{
           d="M48 0C21.5 0 0 21.5 0 48V368c0 26.5 21.5 48 48 48H64c0 53 43 96 96 96s96-43 96-96H384c0 53 43 96 96 96s96-43 96-96h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V288 256 237.3c0-17-6.7-33.3-18.7-45.3L512 114.7c-12-12-28.3-18.7-45.3-18.7H416V48c0-26.5-21.5-48-48-48H48zM416 160h50.7L544 237.3V256H416V160zM112 416a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm368-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
         /></svg
       >
-      <div class="text">consegna gratuita garantita</div>
-      <div class="link">guarda le tempistiche</div>
+      <div class="text cut">consegna gratuita garantita</div>
+      <div class="link ">guarda le tempistiche</div>
     </div>
     <div class="container tempistica desktop-only">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
@@ -109,11 +106,11 @@ let info: Blocco[] = [{
           d="M45.9 42.1c3-6.1 9.6-9.6 16.3-8.7L307 64 551.8 33.4c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1L426.6 217.3c-13.9 4-28.8-1.9-36.2-14.3L307 64 223.6 203c-7.4 12.4-22.3 18.3-36.2 14.3L24.1 170.6C4.8 165.1-4.7 143.4 4.2 125.5L45.9 42.1zM308.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L563 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C66 419.7 51 400.5 51 378.5v-167L178.6 248c27.8 8 57.6-3.8 72.5-28.6L305.9 128h2.2z"
         /></svg
       >
-      <div class="text">politica di reso</div>
-      <div class="link">guarda le tempistiche</div>
+      <div class="text cut">politica di reso</div>
+      <div class="link ">guarda le tempistiche</div>
     </div>
     <div class="spacer desktop-only" />
-    <div class="container prezzo">€{costo_base + costo_extra}</div>
+    <div class="container prezzo">€{costo_base + valore_corrente}</div>
     <div class="container ordina noselect">
       <div class="button">Ordina subito!</div>
     </div>
@@ -149,7 +146,7 @@ let info: Blocco[] = [{
 
       display: flex;
       flex: 1;
-      
+
       .render-container {
         flex: 1;
 
@@ -171,6 +168,10 @@ let info: Blocco[] = [{
         .info {
           font-size: small;
           text-align: center;
+          color: var(--color-var0);
+          span {
+            color: var(--color-var2);
+          }
         }
 
         .render {
@@ -184,7 +185,7 @@ let info: Blocco[] = [{
         }
       }
 
-      .form{
+      .form {
         .incisione-text {
           width: 6rem;
           height: 2rem;
@@ -201,14 +202,13 @@ let info: Blocco[] = [{
           background-color: black;
         }
 
-        .titolo{
+        .titolo {
           font-size: xx-large;
           font-weight: 600;
         }
-        
-        .sub-titolo{
-          
-        }
+
+        // .sub-titolo { }
+
         /* border: 5px solid green; */
         flex: 1;
         padding: 2rem;
@@ -221,6 +221,9 @@ let info: Blocco[] = [{
     }
 
     .pricebar {
+      .desktop-only {
+        /* display: none; */
+      }
       /* border: 5px solid purple; */
       height: var(--bar-height);
       width: 100vw;
@@ -259,6 +262,7 @@ let info: Blocco[] = [{
 
         .text {
           color: rgba(0, 0, 0, 0.46);
+          text-align: center;
         }
       }
 
@@ -292,7 +296,6 @@ let info: Blocco[] = [{
   }
   @media (max-width: 768px) {
     .acquista {
-
       .content {
         flex-direction: column;
         overflow-y: scroll;
@@ -308,15 +311,15 @@ let info: Blocco[] = [{
 
       .pricebar {
         padding: 0 1rem;
-        
+
         .desktop-only {
           display: none;
         }
-      
+
         .container {
           flex: 1;
         }
-        
+
         .ordina {
           .button {
             border-radius: 0.5rem;
@@ -325,6 +328,15 @@ let info: Blocco[] = [{
 
             font-size: small;
           }
+        }
+      }
+    }
+  }
+  @media (max-width: 1000px) {
+    .acquista {
+      .pricebar {
+        .cut {
+          display: none;
         }
       }
     }
