@@ -4,18 +4,18 @@
 
   let route = $page.route.id || ''
 
-  function onClickAcquista (){
-    goto('/frame_site/tamponi/acquista')
-  }
+  page.subscribe((value) => { route = value.route.id || '' })
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="layout">
   <div class="navbar">
     <div class="spacer"></div>
     <div class="title">Swab M-Bike</div>
-    <div class="link panoramica" class:active={route.includes('panoramica')}>panoramica</div>
-    <div class="link confronta"  class:active={route.includes('confronta') }>confronta</div>
-    <div class="link acquista"   class:active={route.includes('acquista')  } on:click={onClickAcquista}>acquista</div>
+    <div class="spacer grosso"></div>
+    <div class="link panoramica" class:active={route.includes('panoramica')} on:click={() => {goto('/frame_site/tamponi/panoramica')}}>panoramica</div>
+    <div class="link confronta"  class:active={route.includes('confronta') } on:click={() => {goto('/frame_site/tamponi/confronta')}}>confronta</div>
+    <div class="link acquista"   class:active={route.includes('acquista')  } on:click={() => {goto('/frame_site/tamponi/acquista')}}>acquista</div>
     <div class="spacer"></div>
   </div>
   <div class="content">
@@ -62,8 +62,12 @@
         flex: 1;
       }
 
+      .spacer.grosso {
+        flex: 5;
+      }
+
       .title {
-        margin-right: 45%;
+        // margin-right: 45%;
         color: var(--color-var3);
       }
 

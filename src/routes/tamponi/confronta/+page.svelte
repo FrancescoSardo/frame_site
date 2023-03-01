@@ -1,0 +1,1 @@
+<div class="confronta">confronta</div>
