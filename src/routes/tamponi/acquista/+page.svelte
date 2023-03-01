@@ -16,6 +16,8 @@
 
   let shop_sections = data.shopinfo.sections;
 
+  
+
   $: {
     valore_extra = shop_sections.reduce((acc, blocco) => {
       return acc + blocco.choices[blocco.seleted].price;
@@ -207,8 +209,12 @@
           font-weight: 600;
         }
 
-        // .sub-titolo { }
-
+        .sub-titolo { 
+          color: var(--color-var1);
+        }
+        .title{
+          color: var(--color-var1);
+        }
         /* border: 5px solid green; */
         flex: 1;
         padding: 2rem;

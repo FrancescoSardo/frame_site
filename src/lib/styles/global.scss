@@ -4,7 +4,7 @@ html, body {
 
   @import url('https://fonts.cdnfonts.com/css/montserrat');
   @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
-  font-family: 'Montserrat', sans-serif;
+  /* font-family: 'Montserrat', sans-serif; */
   font-family: 'SF Pro Display', sans-serif;
 }
 
@@ -13,7 +13,12 @@ html, body {
 }
 
 :root {
-  --color-var0: #D9D9D9;
-  --color-var1: #8C8C8C;
-  --color-var2: #262626;
+  //black-gray
+  --color-var0: #d7d5d5;
+  --color-var1: #a5a4a4;
+  --color-var2: #494949;
+  --color-var3: #010101;
+  //blue
+  --color-var4: rgba(0, 113, 227, 1);
+  --color-var5:  rgba(0, 113, 227, 0.4);
 }

@@ -1,7 +1,12 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import { page } from "$app/stores";
 
   let route = $page.route.id || ''
+
+  function onClickAcquista (){
+    goto('/frame_site/tamponi/acquista')
+  }
 </script>
 
 <div class="layout">
@@ -10,7 +15,7 @@
     <div class="title">Swab M-Bike</div>
     <div class="link panoramica" class:active={route.includes('panoramica')}>panoramica</div>
     <div class="link confronta"  class:active={route.includes('confronta') }>confronta</div>
-    <div class="link acquista"   class:active={route.includes('acquista')  }>acquista</div>
+    <div class="link acquista"   class:active={route.includes('acquista')  } on:click={onClickAcquista}>acquista</div>
     <div class="spacer"></div>
   </div>
   <div class="content">
@@ -42,31 +47,48 @@
 
       align-items: center;
 
+      .panoramica{}
+      .panoramica.active{
+        color: var(--color-var1);
+      }
+
+      .link{
+        color: var(--color-var3);
+        user-select: none;
+        cursor: pointer;
+      }
+
       .spacer {
         flex: 1;
       }
 
       .title {
         margin-right: 45%;
+        color: var(--color-var3);
       }
 
       .acquista {
-        background-color: rgba(0, 113, 227, 1);      
+        background-color: var(--color-var4);      
         padding: 0.2rem 1rem 0.2rem 1rem; 
         border-radius: 2rem;
         color: white;
         box-sizing: border-box;
+        user-select: none;
         transition: all 0.2s ease-in-out;
-
+        cursor: pointer;
         &.active {
-          background-color: rgba(0, 113, 227, 0.4);  
-          cursor: pointer;
+
+          background-color: var(--color-var5);     
           color: white;
         }
 
         &.active:hover{
           background-color: rgba(0, 113, 227, 1); 
           transition: all 0.2s ease-in-out;
+        }
+        .acquista:hover {
+          background-color: red;
+          
         }
     }
     }

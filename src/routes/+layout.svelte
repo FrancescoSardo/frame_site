@@ -2,6 +2,7 @@
   import "$lib/styles/global.scss";
   import { onMount } from "svelte";
   import logo from "$lib/assets/logo.svg";
+  import { goto } from "$app/navigation";
 
   let menu_active = false;
 
@@ -17,6 +18,13 @@
     setVhProperty();
     window.addEventListener('resize', setVhProperty)
   });
+  function onClickCarrello (){
+    goto('/frame_site/carrello')
+  }
+  function onClickTamponi(){
+    goto('/frame_site/tamponi/panoramica')
+  }
+  
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -31,12 +39,12 @@
       <div class="text">specchietti</div>
       <div class="underline"></div>
     </div>
-    <div class="tamponi link desktop-only">
+    <div class="tamponi link desktop-only" on:click={onClickTamponi}>
       <div class="text">tamponi</div>
       <div class="underline"></div>
     </div>
     <div class="spacer desktop-only" />
-    <div class="carrello desktop-only">carrello</div>
+    <div class="carrello desktop-only" on:click={onClickCarrello}>carrello</div>
     <div class="chisiamo desktop-only">chi siamo?</div>
     <div class="spacer desktop-only" />
     
@@ -137,7 +145,21 @@
     }
     
     .carrello {
+      /* border: 1px black solid; */
+      border-radius: 1rem;
+      padding: 0.2rem;
+      user-select: none;
+      cursor: pointer;
+      /* background-color: var(--color-var4); */
+      
+    }
+    .carrello:hover{
 
+      transition: all 0.5s ease;
+      color: var(--color-var4);
+      /* background-color: var(--color-var4); */
+      
+      
     }
 
     .chisiamo {

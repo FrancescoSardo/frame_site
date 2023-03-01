@@ -27,14 +27,14 @@ export let cost: number;
   min-height: 5rem;
 
   width: 100%;
-  border: 3px solid rgb(158, 155, 155);
+  border: 3px solid var(--color-var0);
 
   transition: border 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 
   font-weight: bolder;
 
   .label{
-    color: rgb(158, 155, 155);
+    color: var(--color-var0);
   }
   .cost {
     color: rgb(158, 155, 155);

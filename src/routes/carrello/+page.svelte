@@ -5,6 +5,7 @@
   export let data: PageData;
 
   let items = data.items;
+  let totale = 0;
 </script>
 
 <div class="carrello">
@@ -32,7 +33,14 @@
           <div class="text">Prezzo</div>
           <div class="value">€{item.costo}</div>
         </div>
-        <div class="azioni" />
+        <div class="azioni">
+          <div class="remove">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.99 16.854-1.314 3.504a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63 1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z" fill="#000000"></path></g></svg>
+          </div>
+          <div class="edit">
+            <svg  version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#000000;} </style> <g> <path class="st0" d="M410.886,43.93H301.533C299.778,19.793,280.576,0.093,256.005,0c-24.598,0.093-43.8,19.793-45.556,43.93 H101.115c-22.787,0-41.407,18.628-41.407,41.398v1.792v15.543v14.822c0,5.692,4.648,10.35,10.34,10.35h0.674l23.859,342.87 C96.152,493.408,116.075,512,138.853,512h75.745c22.76,0,60.027,0,82.814,0h75.726c22.769,0,42.701-18.592,44.281-41.296 l23.84-342.87h0.675c5.702,0,10.358-4.658,10.358-10.35v-14.822V87.12v-1.792C452.292,62.558,433.654,43.93,410.886,43.93z"></path> </g> </g></svg>
+          </div>
+        </div>
       </div>
     {/each}
     <div class="bottom-spacer" />
@@ -41,7 +49,7 @@
   <div class="background">
     <div class="price-box">
       <div class="first">
-        <div class="price">Totale: 100€</div>
+        <div class="price">Totale:  <span>{totale}€</span></div>
         <div class="info">
           <div class="container consegna">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
@@ -50,7 +58,7 @@
               /></svg
             >
             <div class="info-item ">Arrivo previsto:</div>
-            <div class="info-item link">entro 20Nov</div>
+            <div class="info-item link"><span>20Nov</span></div>
           </div>
           <div class="container consegna desktop-only">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
@@ -58,8 +66,8 @@
                 d="M45.9 42.1c3-6.1 9.6-9.6 16.3-8.7L307 64 551.8 33.4c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1L426.6 217.3c-13.9 4-28.8-1.9-36.2-14.3L307 64 223.6 203c-7.4 12.4-22.3 18.3-36.2 14.3L24.1 170.6C4.8 165.1-4.7 143.4 4.2 125.5L45.9 42.1zM308.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L563 211.6v167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C66 419.7 51 400.5 51 378.5v-167L178.6 248c27.8 8 57.6-3.8 72.5-28.6L305.9 128h2.2z"
               />
             </svg>
-            <div class="info-item">Politica di reso</div>
-            <div class="info-item">entro 20Nov</div>
+            <div class="info-item">Politica di reso:</div>
+            <div class="info-item"><span>20Nov</span> </div>
           </div>
         </div>
       </div>
@@ -99,7 +107,7 @@
 
       .subtitle {
         text-align: center;
-
+        color: var(--color-var1);
         width: 25%;
       }
     }
@@ -114,7 +122,7 @@
       .divider {
         min-height: 2px;
         max-height: 2px;
-        background-color: rgb(173, 173, 173);
+        background-color: var(--color-var0);
       }
 
       .bottom-spacer {
@@ -133,7 +141,40 @@
 
         grid-template-columns: 10rem 5fr 2fr 2fr 1fr;
 
+        .azioni{
+          /* border: solid 1px black; */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 2rem;
 
+          .remove{
+            width: 1.7rem;
+            height: 1.7rem;
+            cursor: pointer;
+          }
+          .edit{
+            cursor: pointer;
+            width: 1.7rem;
+            height: 1.7rem;
+            svg{
+              fill: var(--color-var5);
+            }
+          }
+          .edit:hover{
+            *{
+              fill: var(--color-var4);
+              transition: all 0.2s ease;
+            }
+          }
+          .remove:hover{
+            *{
+              fill: var(--color-var4);
+              transition: all 0.2s ease;
+            }
+          }
+        }
+        
         .image-container {
           height: 8rem;
           .image { height: 100%; }
@@ -143,14 +184,16 @@
           display: flex;
           flex-direction: column;
           gap: 1rem;
-          font-weight: bold;
+          font-weight: 400;
 
           .text {
-            font-size: large;
+            color: var(--color-var3);
+            font-size: medium;
           }
 
           .value {
-            color: gray;
+            font-weight: 300;
+            color: var(--color-var0)
           }
         }
       }
@@ -191,6 +234,13 @@
           align-items: center;
           justify-content: center;
           gap: 10rem;
+          
+          .price{
+            font-weight: 700;
+            span{
+              color: var(--color-var1);
+            }
+          }
 
           .info {
             display: flex;
@@ -209,6 +259,13 @@
                 width: 2rem;
                 height: 2rem;
               }
+
+              .info-item {
+                color: var(--color-var3);
+                span{
+                  color: var(--color-var4);
+                }
+              }
             }
           }
         }
@@ -217,7 +274,8 @@
           text-align: center;
           background-color: #0085ff;
           color: white;
-
+          user-select: none;
+          cursor: pointer;
           padding: 1rem 2rem;
           border-radius: 0.5rem;
 

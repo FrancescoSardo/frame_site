@@ -6,37 +6,37 @@ export const load = (({ params }) => {
     incisione: "",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 1
   }, {
     incisione: "ciao",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 2
   }, {
     incisione: "ciao",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 3
   }, {
     incisione: "ciao",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 4
   }, {
     incisione: "ciao",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 5
   }, {
     incisione: "ciao",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 6
   }, {
     incisione: "ciao",
     appendice: "nessuna",
     modello: "r6",
-    costo: 0
+    costo: 7
   }];
 
   return {
