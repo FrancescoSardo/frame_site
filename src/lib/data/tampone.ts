@@ -1,13 +1,21 @@
 export type TamponeType = {
-  incisione: IncisioneTampone;
+  incisione: string;
   appendice: AppendiceTampone;
   modello: ModelloTampone;
   costo: number;
 }
 
-// #region ===== Incisione =====
-export type IncisioneTampone = string
+export function tampone_equals(t1: TamponeType, t2: TamponeType) {
+  return t1.incisione == t2.incisione && t1.appendice == t2.appendice && t1.modello == t2.modello
+}
 
+export type TamponeParts = "incisione" | "appendice" | "modello"
+
+// #region ===== Incisione =====
+export const CostoIncisioneTampone: Record<0 | 1, number> = {
+  1: 20,
+  0: 0
+}
 
 // #region ===== Appendice =====
 export type AppendiceTampone = "nessuna" | "squalo" | "dip" | "long"
@@ -47,18 +55,24 @@ export const CostoModelloTampone: Record<ModelloTampone, number> = {
 
 // #endregion
 export type ShopInfo = {
-  sections: ShopSection[];
-}
-
-export type ShopSection = {
-  header: string;
-  choices: ShopChoice[];
-  seleted: number;
-}
-
-export type ShopChoice = {
-  label: string;
-  price: number;
+  "appendice": {
+    "header": string,
+    "options": {
+      "id": AppendiceTampone,
+      "label": string,
+      "price": number
+    }[],
+    "selected": number
+  },
+  "modello": {
+    "header": string,
+    "options": {
+      "id": ModelloTampone,
+      "label": string,
+      "price": number
+    }[],
+    "selected": number
+  }
 }
 
 export function generaInfoShop(tampone?: TamponeType): ShopInfo {
@@ -69,40 +83,32 @@ export function generaInfoShop(tampone?: TamponeType): ShopInfo {
     costo: 0
   }
 
-  let sections = []
+  const info: ShopInfo = {
+    appendice: {
+      header: "Appendice aerodinamica",
+      options: AppendiceTamponeList.map(i => ({ id: i, label: LabelAppendiceTampone[i], price: CostoAppendiceTampone[i] })),
+      selected: AppendiceTamponeList.indexOf(tampone.appendice)
+    },
+    modello: {
+      header: "Modello",
+      options: ModelloTamponeList.map(i => ({ id: i, label: LabelModelloTampone[i], price: CostoModelloTampone[i] })),
+      selected: ModelloTamponeList.indexOf(tampone.modello)
+    }
+  }
 
-  // Incisione
-  sections.push({
-    header: "Incisione personalizzata",
-    choices: [{
-      label: "Nessuna incisione",
-      price: 0
-    }, {
-      label: "Si",
-      price: 20
-    }],
-    seleted: tampone.incisione == "" ? 1 : 0
-  })
+  return info 
+}
 
-  // Appendice
-  sections.push({
-    header: "Appendice aerodinamica",
-    choices: AppendiceTamponeList.map((appendice) => ({
-      label: LabelAppendiceTampone[appendice],
-      price: CostoAppendiceTampone[appendice]
-    })),
-    seleted: AppendiceTamponeList.indexOf(tampone.appendice)
-  })
+export function generaTamponeDaShopInfo(shopinfo: ShopInfo, incisione: string = ""): TamponeType {
+  const tampone: TamponeType = {
+    incisione: incisione,
+    appendice: shopinfo.appendice.options[shopinfo.appendice.selected].id,
+    modello: shopinfo.modello.options[shopinfo.modello.selected].id,
+    costo: 0
+  }
 
-  // Modello
-  sections.push({
-    header: "Modello",
-    choices: ModelloTamponeList.map((modello) => ({
-      label: LabelModelloTampone[modello],
-      price: CostoModelloTampone[modello]
-    })),
-    seleted: ModelloTamponeList.indexOf(tampone.modello)
-  })
+  tampone.costo += CostoIncisioneTampone[tampone.incisione === "" ? 0 : 1] 
+  tampone.costo += CostoAppendiceTampone[tampone.appendice] + CostoModelloTampone[tampone.modello]
 
-  return { sections }
+  return tampone
 }
