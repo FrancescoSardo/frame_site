@@ -1,27 +1,42 @@
 <script lang="ts">
-  import video_render from '$lib/assets/video_render.mp4';
-  import { onMount } from 'svelte';
+  import video_render from "$lib/assets/video_render.mp4";
+  import { top_navbar_active } from "$lib/stores/navbar";
+  import { onMount, onDestroy } from "svelte";
 
   let active_page = 1;
 
-  onMount(() => {
-    let elements = document.querySelectorAll(".page");
-
-    let observer = new IntersectionObserver(
-      (entries) => {
-        for (let entry of entries) {
-          if (entry.isIntersecting) {
-            let value = entry.target.id.charAt(4);
-            active_page = parseInt(value);
-          }
-        }
-      },
-      { threshold: [0.5] }
-    );
-
-    for (let element of elements) {
-      observer.observe(element);
+  function wheel_handler(e: WheelEvent) {
+    if (e.deltaY < 0) {
+      top_navbar_active.set(true);
+    } else {
+      top_navbar_active.set(false);
     }
+  }
+
+  onMount(() => {
+    // let elements = document.querySelectorAll(".page");
+
+    // let observer = new IntersectionObserver(
+    //   (entries) => {
+    //     for (let entry of entries) {
+    //       if (entry.isIntersecting) {
+    //         let value = entry.target.id.charAt(4);
+    //         active_page = parseInt(value);
+    //       }
+    //     }
+    //   },
+    //   { threshold: [0.5] }
+    // );
+
+    // for (let element of elements) {
+    //   observer.observe(element);
+    // }
+
+    addEventListener("wheel", wheel_handler);
+
+    return () => {
+      removeEventListener("wheel", wheel_handler);
+    };
   });
 </script>
 
@@ -35,6 +50,7 @@
   <div class="page" id="page5">5</div>
   <div class="page" id="page6">6</div>
   <div class="page" id="page7">7</div>
+  <div class="float-acquista mobile-only">Acquista</div>
 </div>
 
 <style lang="scss">
@@ -44,12 +60,14 @@
     overflow-y: scroll;
 
     scroll-behavior: smooth;
-    
+
     // scroll-snap-type: y mandatory;
     scrollbar-width: none;
 
     .page:first-child {
-      height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-1) - var(--navbar-height-2));
+      height: calc(
+        var(--vh, 1vh) * 100 - var(--navbar-height-1) - var(--navbar-height-2)
+      );
     }
 
     .page:not(:first-child) {
@@ -61,17 +79,51 @@
 
       width: 100%;
       // height: 100%;
-      
+
       border: 5px solid red;
       box-sizing: border-box;
     }
   }
 
-@media (max-width: 768px) {
-  .panoramica {
-    .page:first-child {
-      height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2));
+  @media (max-width: 768px) {
+    .panoramica {
+      .page:first-child {
+        height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2));
+      }
+    }
+
+    @keyframes glowing {
+      0% {
+        box-shadow: 0 0 5px var(--color-var4);
+      }
+      50% {
+        box-shadow: 0 0 20px var(--color-var4);
+      }
+      100% {
+        box-shadow: 0 0 5px var(--color-var4);
+      }
+    }
+
+    .float-acquista {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      width: 9rem;
+      height: 3rem;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      cursor: pointer;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+
+      border-radius: 10rem;
+
+      background-color: var(--color-var4);
+      animation: glowing 5s infinite ease;
     }
   }
-}
 </style>

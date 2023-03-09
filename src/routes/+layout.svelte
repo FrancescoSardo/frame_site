@@ -4,18 +4,41 @@
   import NavbarTop from "./NavbarTop.svelte";
   import NavbarBottom from "./NavbarBottom.svelte";
   import { page } from "$app/stores";
-  import { route_store } from "$lib/stores/navbar";
+  import {
+    bottom_navbar_active,
+    route_store,
+    top_navbar_active,
+  } from "$lib/stores/navbar";
+  import NavbarMobile from "./NavbarMobile.svelte";
 
-  page.subscribe((value) => { route_store.set(value.route.id || ""); });
+  page.subscribe((value) => {
+    route_store.set(value.route.id || "");
+  });
+
+  let bottom_active = $bottom_navbar_active;
+  bottom_navbar_active.subscribe((value) => {
+    bottom_active = value;
+  });
+
+  let top_active = $top_navbar_active;
+  top_navbar_active.subscribe((value) => {
+    top_active = value;
+  });
 
   onMount(() => {
-    function setVhProperty() {
-      let element: HTMLElement | null = document.querySelector(":root");
+    let root: HTMLElement = document.querySelector(":root")!;
 
-      if (element) {
-        element.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
-      }
+    function setVhProperty() {
+      root.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
     }
+
+    top_navbar_active.subscribe((value) => {
+      root.style.setProperty("--h1", `${value ? "4rem" : "0rem"}`);
+    });
+
+    bottom_navbar_active.subscribe((value) => {
+      root.style.setProperty("--h2", `${value ? "3rem" : "0rem"}`);
+    });
 
     setVhProperty();
     window.addEventListener("resize", setVhProperty);
@@ -25,14 +48,17 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="layout">
-  <NavbarTop />
-  <NavbarBottom />
-  <!-- <div
-    class="float-acquista mobile-only"
-    class:active={route.includes("panoramica")}
-  >
-    Acquista
-  </div> -->
+  <div class="navbar-desktop">
+    <div class="top-nav">
+      <NavbarTop />
+    </div>
+    <div class="bottom-nav">
+      <NavbarBottom />
+    </div>
+  </div>
+  <div class="navbar-mobile">
+    <NavbarMobile />
+  </div>
   <div class="content">
     <slot />
   </div>
@@ -45,8 +71,33 @@
     display: flex;
     flex-direction: column;
 
+    .navbar-mobile {
+      display: none;
+    }
+
+    .navbar-desktop {
+      --translateY: calc(var(--h1) - var(--navbar-height-1));
+
+      height: var(--navbar-height-total);
+      transition: height 0.5s ease-in-out;
+      overflow: hidden;
+    }
+
+    .top-nav {
+      height: var(--navbar-height-1);
+      transform: translateY(var(--translateY));
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .bottom-nav {
+      height: var(--navbar-height-2);
+      transform: translateY(var(--translateY));
+      transition: transform 0.5s ease-in-out;
+    }
+
     .content {
       height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-total));
+      transition: height 0.5s ease-in-out;
 
       display: flex;
       flex-direction: column;
@@ -57,50 +108,18 @@
   }
 
   @media (max-width: 768px) {
-    // .layout {
-      
+    .layout {
+      .navbar-desktop {
+        display: none;
+      }
+      .navbar-mobile {
+        display: block;
+        height: var(--navbar-height-mobile);
+      }
 
-    //   @keyframes glowing {
-    //     0% {
-    //       box-shadow: 0 0 5px var(--color-var4);
-    //     }
-    //     50% {
-    //       box-shadow: 0 0 20px var(--color-var4);
-    //     }
-    //     100% {
-    //       box-shadow: 0 0 5px var(--color-var4);
-    //     }
-    //   }
-
-    //   .float-acquista:not(.active) {
-    //     display: none;
-    //   }
-
-    //   .float-acquista.active {
-    //     position: absolute;
-    //     bottom: 1rem;
-    //     right: 1rem;
-    //     width: 9rem;
-    //     height: 3rem;
-
-    //     display: flex;
-    //     justify-content: center;
-    //     align-items: center;
-
-    //     cursor: pointer;
-    //     color: white;
-    //     font-size: 1.2rem;
-    //     font-weight: bold;
-
-    //     border-radius: 10rem;
-
-    //     background-color: var(--color-var4);
-    //     animation: glowing 5s infinite ease;
-    //   }
-
-    //   .float-acquista.active:hover {
-    //     background-color: red;
-    //   }
-    // }
+      .content {
+        height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-mobile));
+      }
+    }
   }
 </style>

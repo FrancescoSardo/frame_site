@@ -24,7 +24,6 @@ let menu_active = false;
   <div class="spacer" />
   <div
     class="specchietti tab-link desktop-only"
-    class:active={route.includes("specchietti")}
     on:click={() => goto("/frame_site/specchietti/panoramica")}
   >
     <div class="text">specchietti</div>
@@ -55,13 +54,11 @@ let menu_active = false;
 </div>
 
 <style lang="scss">
-  .navbar:not(.active) { display: none; }
-  
   .navbar {
     box-sizing: border-box;
 
     transition: height 0.1s ease;
-    height: var(--navbar-height-1);
+    height: 100%;
 
     display: flex;
     align-items: center;

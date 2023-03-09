@@ -3,6 +3,7 @@ import ShopButton from "./ShopButton.svelte";
 import render_shark from "$lib/assets/render_shark.png";
 import { onMount } from "svelte";
 import type { PageData } from "./$types";
+import Galleria from "./Galleria.svelte";
 
 import PriceBar from "./PriceBar.svelte";
 import { CostoIncisioneTampone, generaTamponeDaShopInfo, type TamponeParts, type TamponeType } from "$lib/data/tampone";
@@ -21,16 +22,18 @@ $: {
 
 $: tampone = generaTamponeDaShopInfo(shop_sections, incisione_text);
 
-let gallery_active = false;
+export let gallery_active = false;
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="acquista">
+ <Galleria  gallery_active_prop={gallery_active}/>
   <div class="content">
+   
     <div class="render-container">
       <img class="render" src={render_shark} alt="" />
-      <div class="galleria link" on:click={() => {gallery_active = true}}>Galleria</div>
+      <div class="galleria link" on:click={() => {gallery_active = true; }}>Galleria</div>
       <div class="info">
         hai qualche <span>domanda?</span>
         scrivi a questo numero<br /> +3987223423
@@ -68,6 +71,7 @@ let gallery_active = false;
     </div>
   </div>
   <PriceBar costo={tampone.costo} />
+
 </div>
 
 <style lang="scss">
@@ -77,6 +81,7 @@ let gallery_active = false;
     display: flex;
     flex-direction: column;
     height: 100%;
+
 
     .content {
       /* border: 5px solid cyan; */

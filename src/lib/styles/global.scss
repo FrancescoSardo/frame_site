@@ -26,7 +26,13 @@ html, body {
   
   --navbar-height-1: 4rem;
   --navbar-height-2: 3rem;
-  --navbar-height-total: calc(var(--navbar-height-1) + var(--navbar-height-2));
+
+  --h1: --navbar-height-1;
+  --h2: --navbar-height-2;
+
+  --navbar-height-total: calc(var(--h1) + var(--h2));
+
+  --navbar-height-mobile: 4rem;
 }
 
 .spacer-1 { flex: 1; }

@@ -19,9 +19,13 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="navbar mobile">
+<div class="navbar">
+  <div class="spacer-1" />
+  <div class="logo"><img src={logo} /></div>
+  <div class="spacer-3" />
+  <div class="spacer-3" />
   <div
-    class="hamburger mobile-only"
+    class="hamburger"
     class:active={menu_active}
     on:click={() => {
       menu_active = !menu_active;
@@ -31,18 +35,19 @@
     <span class="line2" />
     <span class="line3" />
   </div>
+  <div class="spacer-1" />
 
-  <div class="menu mobile-only" class:active={menu_active}>
+  <div class="menu" class:active={menu_active}>
     <div class="left half-menu">
       <div
-        class="mob-link mobile-only"
+        class="mob-link"
         class:active={route.includes("specchietti")}
         on:click={() => navigate_to("/frame_site/specchietti/panoramica")}
       >
         Specchietti
       </div>
       <div
-        class="mob-link mobile-only"
+        class="mob-link"
         class:active={route.includes("tamponi")}
         on:click={() => navigate_to("/frame_site/tamponi/panoramica")}
       >
@@ -51,28 +56,28 @@
     </div>
     <div class="right half-menu">
       <div
-        class="mob-link mobile-only"
+        class="mob-link "
         class:active={route.includes("confronta")}
         on:click={() => navigate_to("/frame_site/tamponi/confronta")}
       >
         Confronta
       </div>
       <div
-        class="mob-link mobile-only"
+        class="mob-link "
         class:active={route.includes("panoramica")}
         on:click={() => navigate_to("/frame_site/tamponi/panoramica")}
       >
         Panoramica
       </div>
       <div
-        class="mob-link mobile-only"
+        class="mob-link "
         class:active={route.includes("chisiamo")}
         on:click={() => navigate_to("/frame_site/chisiamo")}
       >
         Chi siamo?
       </div>
       <div
-        class="mob-link mobile-only"
+        class="mob-link "
         class:active={route.includes("carrello")}
         on:click={() => navigate_to("/frame_site/carrello")}
       >
@@ -84,6 +89,29 @@
 
 <style lang="scss">
   .navbar {
+    z-index: 1000;
+    
+    box-sizing: border-box;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    
+    .logo {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    
     .hamburger {
       width: 32px;
       height: 32px;
@@ -91,6 +119,7 @@
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
+      box-sizing: border-box;
 
       span {
         width: 100%;
@@ -124,8 +153,8 @@
     width: 100%;
     overflow: hidden;
     background: white;
-    transition: all 1s ease;
-    border-bottom: 2px solid black;
+    transition: height 1s ease;
+    border-bottom: 3px solid black;
 
     display: flex;
 

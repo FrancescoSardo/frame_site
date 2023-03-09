@@ -5,7 +5,7 @@
   import { onMount } from "svelte";
 
   let active: boolean = $bottom_navbar_active;
-  bottom_navbar_active.subscribe((value) => { active = value; console.log(value) });
+  bottom_navbar_active.subscribe((value) => { active = value; });
 
   let route = $page.route.id || "";
   page.subscribe((value) => {
@@ -14,13 +14,12 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<nav class="navbar" class:active>
+<nav class="navbar">
   <div class="spacer-1" />
   <div class="title">Swab M-Bike</div>
   <div class="spacer-5" />
   <div
     class="tab-link panoramica"
-    class:active={route.includes("panoramica")}
     on:click={() => {
       goto("/frame_site/tamponi/panoramica");
     }}
@@ -49,12 +48,13 @@
 </nav>
 
 <style lang="scss">
-  .navbar:not(.active) { display: none; }
+  // .navbar:not(.active) {
+  //   display: none;
+  // }
 
   .navbar {
-    /* border: 5px solid blue; */
     box-sizing: border-box;
-    height: var(--navbar-height-2);
+    height: 100%;
 
     display: flex;
     gap: 3rem;
