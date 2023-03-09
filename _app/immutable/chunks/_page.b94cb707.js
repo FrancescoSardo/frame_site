@@ -1,0 +1,1 @@
+import{a as o}from"./tampone.a7319845.js";const e=({params:r})=>({shopinfo:o()}),t=Object.freeze(Object.defineProperty({__proto__:null,load:e},Symbol.toStringTag,{value:"Module"}));export{t as _,e as l};
