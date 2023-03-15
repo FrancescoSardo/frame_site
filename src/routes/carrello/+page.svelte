@@ -1,16 +1,26 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   import render_shark from "$lib/assets/render_shark.png";
-    import PriceBox from "./PriceBox.svelte";
-    import CartItem from "./CartItem.svelte";
+  import PriceBox from "./PriceBox.svelte";
+  import CartItem from "./CartItem.svelte";
+  import { cart_store, type CartStoreType } from "$lib/stores/cart";
 
   export let data: PageData;
 
   let items = data.items;
+  cart_store.subscribe((value) => {
+    items = value;
+  });
 
-  let totale = items.reduce((acc, item) => {
-    return acc + item.costo;
-  }, 0);
+  let totale = 0;
+  $: { updateTotale(items); }
+
+  function updateTotale(cart_items: CartStoreType) {
+    totale = 0;
+    for (let [key, item] of Object.entries(cart_items)) {
+      totale += item.tampone.costo * item.quantity;
+    }
+  }
 </script>
 
 <div class="carrello">
@@ -22,8 +32,8 @@
     </div>
   </div>
   <div class="list">
-    {#each items as item}
-      <CartItem {item} image={render_shark} />
+    {#each Object.entries(items) as [_, item]}
+      <CartItem tampone={item.tampone} quantita={item.quantity} image={render_shark}/>
     {/each}
     <div class="bottom-spacer" />
   </div>

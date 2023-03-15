@@ -11,9 +11,8 @@
   ];
   let gallery_index = 0;
 
-  $: gallery_active = gallery_active_prop;
-
-  export let gallery_active_prop = false;
+  export let gallery_active = false;
+  export let close_gallery: () => void
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -29,9 +28,7 @@
   <div class="button-container">
     <div
       class="close"
-      on:click={() => {
-        gallery_active = false;
-      }}
+      on:click={close_gallery}
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
         ><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path

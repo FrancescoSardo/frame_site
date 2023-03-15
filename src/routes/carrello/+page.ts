@@ -1,9 +1,9 @@
 import type { TamponeType } from '$lib/data/tampone';
-import { get_cart } from '$lib/stores/cart';
+import { get_cart, type CartStoreType } from '$lib/stores/cart';
 import type { PageLoad } from './$types';
 
 export const load = (({ params }) => {
-  let items: TamponeType[] = get_cart();
+  let items: CartStoreType = get_cart();
 
   return {
     items

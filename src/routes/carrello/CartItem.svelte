@@ -1,27 +1,40 @@
 <script lang="ts">
-  import type { TamponeType } from "$lib/data/tampone";
+  import { goto } from "$app/navigation";
+  import type { Tampone } from "$lib/data/tampone";
+  import { remove_item_from_cart } from "$lib/stores/cart";
+  import { shop_store } from "$lib/stores/shop";
 
-  export let item: TamponeType;
-  export let image: string;
+  export let tampone: Tampone;
+  export let quantita: number;
+  export let image: string = "";
+
+  let specifiche_text = tampone.incisione != "" ? `incisione: ${tampone.incisione}, ` : ""
+  specifiche_text += `appendice: ${tampone.appendice}, modello: ${tampone.modello}`
+
 </script>
 
 <div class="divider" />
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="item">
   <div class="image-container"><img class="image" src={image} alt="" /></div>
   <div class="info display">
     <div class="text">Tampone</div>
-    <div class="value">Le specifiche vanno qui</div>
+    <div class="value">{specifiche_text}</div>
   </div>
   <div class="quantita display">
     <div class="text">Quantità</div>
-    <div class="value">1</div>
+    <div class="value">{quantita}</div>
   </div>
   <div class="prezzo display">
     <div class="text">Prezzo</div>
-    <div class="value">€{item.costo}</div>
+    <div class="value">€{tampone.costo * quantita}</div>
   </div>
   <div class="azioni">
-    <div class="remove">
+    <div class="edit" on:click={() => {
+      shop_store.set(tampone);
+      goto("/frame_site/tamponi/acquista");
+      remove_item_from_cart(tampone);
+    }}>
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
         ><g id="SVGRepo_bgCarrier" stroke-width="0" /><g
           id="SVGRepo_tracerCarrier"
@@ -37,7 +50,7 @@
         ></svg
       >
     </div>
-    <div class="edit">
+    <div class="remove" on:click={() => { remove_item_from_cart(tampone); }}>
       <svg
         version="1.1"
         id="_x32_"

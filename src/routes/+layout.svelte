@@ -10,6 +10,8 @@
     top_navbar_active,
   } from "$lib/stores/navbar";
   import NavbarMobile from "./NavbarMobile.svelte";
+    import type { Snapshot } from "./$types";
+    import { cart_store } from "$lib/stores/cart";
 
   page.subscribe((value) => {
     route_store.set(value.route.id || "");
@@ -43,6 +45,15 @@
     setVhProperty();
     window.addEventListener("resize", setVhProperty);
   });
+
+  export const snapshot: Snapshot = {
+    capture: () => {
+      return { cart: $cart_store }
+    },
+    restore: (state) => {
+      cart_store.set(state.cart)
+    }
+  };
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->

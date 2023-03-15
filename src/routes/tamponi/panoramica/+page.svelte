@@ -1,8 +1,10 @@
 <script lang="ts">
   import video_render from "$lib/assets/video_render.mp4";
   import { top_navbar_active } from "$lib/stores/navbar";
+  import { generateScene } from "$lib/utils/3D";
   import { onMount, onDestroy } from "svelte";
 
+  let render_container: HTMLDivElement;
   let active_page = 1;
 
   function wheel_handler(e: WheelEvent) {
@@ -13,37 +15,53 @@
     }
   }
 
-  onMount(() => {
-    // let elements = document.querySelectorAll(".page");
+  onMount(async () => {
+    let { renderer, scene, camera } = await generateScene(render_container, "/long.gltf");
 
-    // let observer = new IntersectionObserver(
-    //   (entries) => {
-    //     for (let entry of entries) {
-    //       if (entry.isIntersecting) {
-    //         let value = entry.target.id.charAt(4);
-    //         active_page = parseInt(value);
-    //       }
-    //     }
-    //   },
-    //   { threshold: [0.5] }
-    // );
+    function animate(time: number) {
+      requestAnimationFrame(animate);
 
-    // for (let element of elements) {
-    //   observer.observe(element);
-    // }
+      renderer.render(scene, camera);
+    }
 
-    addEventListener("wheel", wheel_handler);
+    requestAnimationFrame(animate);
 
-    return () => {
-      removeEventListener("wheel", wheel_handler);
-    };
+    window.addEventListener("wheel", wheel_handler);
   });
+
+  
+
+  onDestroy(() => {
+    window.removeEventListener("wheel", wheel_handler);
+  })
+
+  // onMount(() => {
+  //   // let elements = document.querySelectorAll(".page");
+
+  //   // let observer = new IntersectionObserver(
+  //   //   (entries) => {
+  //   //     for (let entry of entries) {
+  //   //       if (entry.isIntersecting) {
+  //   //         let value = entry.target.id.charAt(4);
+  //   //         active_page = parseInt(value);
+  //   //       }
+  //   //     }
+  //   //   },
+  //   //   { threshold: [0.5] }
+  //   // );
+
+  //   // for (let element of elements) {
+  //   //   observer.observe(element);
+  //   // }
+  // });
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->
 <div class="panoramica">
   <!-- <video autoplay muted loop src={video_render}></video> -->
-  <div class="page" id="page1">1</div>
+  <div class="page" id="page1">
+    <div bind:this={render_container} class="render-container" />
+  </div>
   <div class="page" id="page2">2</div>
   <div class="page" id="page3">3</div>
   <div class="page" id="page4">4</div>
@@ -63,6 +81,20 @@
 
     // scroll-snap-type: y mandatory;
     scrollbar-width: none;
+
+    .render-container {
+      width: 100%;
+      height: 512px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      canvas {
+        width: 512px;
+        height: 512px;
+      }
+    }
 
     .page:first-child {
       height: calc(

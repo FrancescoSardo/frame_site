@@ -147,6 +147,8 @@
   }
 
   .menu {
+    z-index: 1000;
+    
     position: absolute;
     top: var(--navbar-height-1);
     height: 0rem;

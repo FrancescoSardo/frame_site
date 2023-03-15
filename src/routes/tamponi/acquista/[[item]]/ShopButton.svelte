@@ -3,10 +3,12 @@ export let label: string;
 export let selected: boolean;
 export let onClick: () => void = () => {};
 export let cost: number;
+export let no_pointer: boolean = false;
+export let no_hover: boolean = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="shop-btn" class:selected on:click={onClick}>
+<div class="shop-btn" class:selected class:no_pointer class:no_hover on:click={onClick}>
   <div class="label">{label}</div>
   <slot />
   <div class="spacer-1"></div>
@@ -14,7 +16,7 @@ export let cost: number;
 </div>
 
 <style lang="scss">
-.shop-btn{
+.shop-btn {
   user-select: none;
   display: flex;
   align-items: center;
@@ -45,14 +47,6 @@ export let cost: number;
     min-width: 5rem;
   }
 
-  &:not(.selected) {
-    cursor: pointer;
-
-    &:hover {
-      background-color: #F5F5F7;
-    }
-  }
-
   &.selected{
     border: #0071E3 solid 3px;
     color: #0071E3;
@@ -69,6 +63,21 @@ export let cost: number;
       color: var(--color-var0);
 
       min-width: 8rem;
+    }
+  }
+}
+
+
+.shop-btn:not(.no_pointer) {
+  &:not(.selected) {
+    cursor: pointer;
+  }
+}
+
+.shop-btn:not(.no_hover) {
+  &:not(.selected) {
+    &:hover {
+      background-color: #F5F5F7;
     }
   }
 }
