@@ -4,107 +4,230 @@
   import PriceBox from "./PriceBox.svelte";
   import CartItem from "./CartItem.svelte";
   import { cart_store, type CartStoreType } from "$lib/stores/cart";
+  import { Tampone } from "$lib/data/tampone";
 
   export let data: PageData;
 
   let items = data.items;
-  cart_store.subscribe((value) => {
-    items = value;
-  });
 
-  let totale = 0;
-  $: { updateTotale(items); }
+  // let items = data.items;
+  // cart_store.subscribe((value) => {
+  //   items = value;
+  // });
 
-  function updateTotale(cart_items: CartStoreType) {
-    totale = 0;
-    for (let [key, item] of Object.entries(cart_items)) {
-      totale += item.tampone.costo * item.quantity;
-    }
-  }
+  $: totale = items.reduce((acc, item) => {
+    return acc + item.costo;
+  }, 0);
 </script>
 
 <div class="carrello">
-  <div class="header">
+  <div class="left">
     <div class="title">I tuoi articoli</div>
-    <div class="subtitle">
+    <div class="info">
       Qui puoi vedere tutti gli articoli che hai selezionato per l'acquisto e le
       informazioni relative al tuo ordine.
     </div>
+    <div class="itemlist no-navbar">
+      {#each items as item}
+        <CartItem tampone={item} image={render_shark} />
+      {/each}
+      <CartItem tampone={new Tampone("", "nessuna", "r6")} image={render_shark} newitem={true} />
+      <div class="empty"/>
+    </div>
   </div>
-  <div class="list">
-    {#each Object.entries(items) as [_, item]}
-      <CartItem tampone={item.tampone} quantita={item.quantity} image={render_shark}/>
-    {/each}
-    <div class="bottom-spacer" />
+  <div class="right">
+    <div class="title">info</div>
+    <div class="info">Dicci qualcosa su di te</div>
+    <div class="input-content">
+      <div class="cont">
+        <div class="text">Email</div>
+        <input type="text" />
+      </div>
+      <div class="cont">
+        <div class="text">Telefono</div>
+        <input type="text" />
+      </div>
+      <div class="line" />
+      <div class="cont">
+        <div class="text">Indirizzo Postale</div>
+        <input type="text" />
+      </div>
+
+      <div class="box">
+        <div class="cont">
+          <div class="text">Cap</div>
+          <input type="text" class="text" />
+        </div>
+
+        <div class="cont">
+          <div class="text">Città</div>
+          <input type="text" class="text" />
+        </div>
+      </div>
+
+      <div class="cont">
+        <div class="text">Note</div>
+        <input type="text" />
+      </div>
+
+      <div class="line" />
+      <!-- Bottoni -->
+      <div class="content-tot">
+        <div class="button">Acquista</div>
+        <div class="spacer-1" />
+        <div class="text">Totale:</div>
+        <div class="price">2000</div>
+      </div>
+    </div>
   </div>
-  <PriceBox {totale} />
 </div>
 
 <style lang="scss">
   .carrello {
     display: flex;
-    flex-direction: column;
-
-    max-height: 100%;
-    height: 100%;
-
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
+    height: 100%;
+    max-height: 100%;
 
-    gap: 2rem;
+    gap: 10rem;
 
-    .header {
-      height: 8rem;
-      min-height: 8rem;
+    .title {
+      font-size: 2rem;
+      font-weight: 600;
+
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-
-      gap: 1rem;
-
-      .title {
-        font-size: xx-large;
-        font-weight: bold;
-      }
-
-      .subtitle {
-        text-align: center;
-        color: var(--color-var1);
-        width: 25%;
-      }
-    }
-    
-    .list {
-      flex: 1;
-      overflow-y: scroll;
-
-      padding: 0 10%;
       box-sizing: border-box;
 
-      .bottom-spacer {
-        height: 20rem;
-        min-height: 20rem;
+      height: 10%;
+    }
+
+    .info {
+      display: flex;
+      text-align: center;
+      color: gray;
+      box-sizing: border-box;
+      justify-content: center;
+
+      height: 10%;
+    }
+
+    .left {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+
+      .itemlist {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        box-sizing: border-box;
+
+        max-height: 80%;
+        height: 80%;
+        min-height: 80%;
+
+        overflow-y: scroll;
+
+        .empty {
+          min-height: 3rem;
+        }
       }
     }
-  }
 
-  @media (max-width: 768px) {
-    .carrello {
-      overflow-y: scroll;
+    .right {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      /* height: 100%; */
+      padding-bottom: 1rem;
 
-      .header {
-        height: 8rem;
-        min-height: 8rem;
+      .input-content {
+        height: 80%;
+        
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        // height: 100vh;
+        box-sizing: border-box;
+        justify-content: space-between;
 
-        .subtitle {
-          width: 90%;
+        .cont {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+          width: 100%;
         }
-  
-      }
 
-      .list {
-        overflow-y: visible;
-        padding: 0 1rem;
+        input[type="text"] {
+          border: none;
+          border-radius: 0.2rem;
+          border: 1px solid gray;
+          background-color: transparent;
+          color: black;
+          font-size: medium;
+          box-sizing: border-box;
+          padding: 0.3rem;
+        }
+
+        .box {
+          display: flex;
+          box-sizing: border-box;
+          gap: 1rem;
+          height: fit-content;
+
+          .side {
+            flex: 1;
+            .text {
+              width: 100%;
+            }
+          }
+        }
+
+        .content-tot {
+          display: flex;
+          align-items: center;
+/*           gap: 2rem; */
+          
+          .button {
+            width: 15rem;
+            text-align: center;
+            user-select: none;
+            cursor: pointer;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+
+            font-size: large;
+            box-sizing: border-box;
+
+            // background-color: #0085ff;
+            color: #0085ff;
+            background-color: white;
+            border: 2px solid #0085ff;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+            font-weight: bold;
+          }
+
+          .button:hover{
+            background-color: #0085ff;
+            color: white;
+            // background-color: white;
+            // color: #0085ff;
+          }
+
+          .text{
+            font-weight: 100;
+            margin-right: 0.5rem;
+          }
+          .price{
+            font-size: x-large;
+            font-weight: bold;
+          }
+        }
       }
     }
   }

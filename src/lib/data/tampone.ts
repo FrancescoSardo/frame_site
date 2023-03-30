@@ -51,8 +51,4 @@ export class Tampone {
 
     return prezzo;
   }
-
-  get hash(): string {
-    return `${this.incisione}-${this.appendice}-${this.modello}`;
-  }
 }
