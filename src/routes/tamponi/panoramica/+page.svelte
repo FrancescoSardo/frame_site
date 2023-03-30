@@ -1,5 +1,5 @@
 <script lang="ts">
-  import video_render from "$lib/assets/video_render.mp4";
+  // import video_render from "$lib/assets/video_render.mp4";
   import { top_navbar_active } from "$lib/stores/navbar";
   import { generateScene } from "$lib/utils/3D";
   import { onMount, onDestroy } from "svelte";
