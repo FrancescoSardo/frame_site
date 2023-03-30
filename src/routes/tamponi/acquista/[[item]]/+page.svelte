@@ -5,7 +5,7 @@
   import type { PageData } from "./$types";
   import Galleria from "./Galleria.svelte";
   import PriceBar from "./PriceBar.svelte";
-  import { generateScene } from "$lib/utils/3D";
+  import { degToRad, generateScene } from "$lib/utils/3D";
   import { add_item_to_cart } from "$lib/stores/cart";
   import { goto } from "$app/navigation";
   import { AppendiceTamponeInfo, IncisioneTamponeInfo, ModelloTamponeInfo, type AppendiceTamponeType, type ModelloTamponeType } from "$lib/data/tampone";
@@ -50,12 +50,12 @@
     );
     camera.position.z = 250;
 
+    item.rotateY(degToRad(-140));
+
     function animate(time: number) {
       requestAnimationFrame(animate);
 
       renderer.render(scene, camera);
-
-      item.rotation.y += 0.01;
     }
 
     requestAnimationFrame(animate);

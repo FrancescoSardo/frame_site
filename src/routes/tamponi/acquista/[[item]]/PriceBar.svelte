@@ -135,13 +135,26 @@
       cursor: pointer;
       .button {
         text-align: center;
-        background-color: #0085ff;
-        color: white;
+        // background-color: #0085ff;
+        // color: white;
 
         padding: 1rem 2rem;
         border-radius: 0.5rem;
 
         font-size: large;
+
+        color: #0085ff;
+        background-color: white;
+        border: 2px solid #0085ff;
+
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+    }
+
+    .ordina:hover {
+      .button {
+        color: white;
+        background-color: #0085ff;
       }
     }
   }

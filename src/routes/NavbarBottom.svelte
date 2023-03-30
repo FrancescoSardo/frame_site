@@ -79,22 +79,24 @@
     }
 
     .acquista {
-      background-color: var(--color-var4);
       padding: 0.2rem 1rem 0.2rem 1rem;
       border-radius: 2rem;
-      color: white;
       box-sizing: border-box;
       user-select: none;
       transition: all 0.2s ease-in-out;
       cursor: pointer;
 
+      background-color: white;
+      color: #0085ff;
+      border: 2px solid #0085ff;
+
       &.active {
-        background-color: var(--color-var5);
+        background-color: #0085ff;
         color: white;
       }
 
       &:hover {
-        background-color: var(--color-var5);
+        background-color: #0085ff;
         color: white;
       }
     }

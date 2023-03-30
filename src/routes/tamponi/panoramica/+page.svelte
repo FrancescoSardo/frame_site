@@ -1,39 +1,35 @@
 <script lang="ts">
-  // import video_render from "$lib/assets/video_render.mp4";
+  import video_render from "$lib/assets/video_render.mp4";
   import { top_navbar_active } from "$lib/stores/navbar";
   import { generateScene } from "$lib/utils/3D";
   import { onMount, onDestroy } from "svelte";
 
-  let render_container: HTMLDivElement;
-  let active_page = 1;
+  function scroll_handler() {
+    let delta = panoramica_element.scrollTop - last_scroll;
+    last_scroll = panoramica_element.scrollTop;
 
-  function wheel_handler(e: WheelEvent) {
-    if (e.deltaY < 0) {
+    if (delta < 0) {
       top_navbar_active.set(true);
     } else {
       top_navbar_active.set(false);
     }
   }
 
+  let panoramica_element: HTMLDivElement;
+  let render_container: HTMLDivElement;
+  let last_scroll = 0;
+
   onMount(async () => {
-    let { renderer, scene, camera } = await generateScene(render_container, "/long.gltf");
+    // let { renderer, scene, camera } = await generateScene(render_container, "/long.gltf");
 
     function animate(time: number) {
       requestAnimationFrame(animate);
 
-      renderer.render(scene, camera);
+      // renderer.render(scene, camera);
     }
 
     requestAnimationFrame(animate);
-
-    window.addEventListener("wheel", wheel_handler);
   });
-
-  
-
-  onDestroy(() => {
-    window.removeEventListener("wheel", wheel_handler);
-  })
 
   // onMount(() => {
   //   // let elements = document.querySelectorAll(".page");
@@ -57,12 +53,16 @@
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->
-<div class="panoramica">
-  <!-- <video autoplay muted loop src={video_render}></video> -->
+<div class="panoramica" on:scroll={scroll_handler} bind:this={panoramica_element}>
   <div class="page" id="page1">
-    <div bind:this={render_container} class="render-container" />
+    <video autoplay muted loop src={video_render}></video>
+    <div class="blur" />
   </div>
-  <div class="page" id="page2">2</div>
+  <div class="page" id="page2">
+    <div class="render-container" bind:this={render_container} />
+    <div class="title">Più di un semplice tampone</div>
+    <div class="text">Migliora la tua esperienza di guida in moto con il nostro tampone aereodinamico. Grazie alle sue appendici intercambiabili, potrai scegliere quella che meglio si adatta al tuo stile e alle tue esigenze. Inoltre, la sua costruzione resistente e durevole ti garantirà prestazioni elevate e durature.</div>
+  </div>
   <div class="page" id="page3">3</div>
   <div class="page" id="page4">4</div>
   <div class="page" id="page5">5</div>
@@ -82,28 +82,82 @@
     // scroll-snap-type: y mandatory;
     scrollbar-width: none;
 
-    .render-container {
-      width: 100%;
-      height: 512px;
+    .page:first-child {
+      position: relative;
+      overflow: hidden;
+      // border: 5px solid red;
+      
+      video {
+        width: 100%;
+        // max-height: 100%;
+        height: 120%;
+        
+        object-fit: contain;
+      }
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      canvas {
-        width: 512px;
-        height: 512px;
+      .blur {
+        position: absolute;
+        bottom: 0;
+        height: 2rem;
+        width: 100%;
+        // background-color: red;
+        background: rgb(0,0,0);
+        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(255,255,255,1) 50%); 
       }
     }
 
-    .page:first-child {
-      height: calc(
-        var(--vh, 1vh) * 100 - var(--navbar-height-1) - var(--navbar-height-2)
-      );
+    .page:nth-child(2) {
+      display: grid;
+
+      grid-template-columns: 50vw 1fr;
+      grid-template-rows: 8rem 1fr;
+
+      gap: 2rem;
+
+      .title {
+        grid-column: 1 / 3;
+        grid-row: 1;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 5rem;
+      }
+
+      .text {
+        grid-column: 2;
+        grid-row: 2;
+
+        display: flex;
+        justify-content: center;
+
+        font-size: 2rem;
+        color: gray;
+      }
+
+      .render-container {
+        grid-column: 1;
+        grid-row: 2;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        border: 5px solid red;
+
+        canvas {
+          max-width: 100%;
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
 
     .page:not(:first-child) {
       height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2));
+
+      padding: 0 2rem;
     }
 
     .page {
@@ -112,7 +166,7 @@
       width: 100%;
       // height: 100%;
 
-      border: 5px solid red;
+      /* border: 5px solid red; */
       box-sizing: border-box;
     }
   }

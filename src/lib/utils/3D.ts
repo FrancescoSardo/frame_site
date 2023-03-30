@@ -10,6 +10,9 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
+export function degToRad(deg: number) {
+  return deg * (Math.PI / 180);
+}
 
 export async function generateScene(container: HTMLElement, gltf_path: string) {
   let item: Object3D;

@@ -21,6 +21,7 @@
 </script>
 
 <div class="carrello">
+  <div class="spacer-1" />
   <div class="left">
     <div class="title">I tuoi articoli</div>
     <div class="info">
@@ -35,6 +36,7 @@
       <div class="empty"/>
     </div>
   </div>
+  <div class="spacer-3" />
   <div class="right">
     <div class="title">info</div>
     <div class="info">Dicci qualcosa su di te</div>
@@ -54,12 +56,12 @@
       </div>
 
       <div class="box">
-        <div class="cont">
+        <div class="cont side">
           <div class="text">Cap</div>
-          <input type="text" class="text" />
+          <input type="text" class="text" maxlength="5" />
         </div>
 
-        <div class="cont">
+        <div class="cont side">
           <div class="text">Città</div>
           <input type="text" class="text" />
         </div>
@@ -76,10 +78,11 @@
         <div class="button">Acquista</div>
         <div class="spacer-1" />
         <div class="text">Totale:</div>
-        <div class="price">2000</div>
+        <div class="price">€{totale}</div>
       </div>
     </div>
   </div>
+  <div class="spacer-1" />
 </div>
 
 <style lang="scss">
@@ -90,8 +93,7 @@
     box-sizing: border-box;
     height: 100%;
     max-height: 100%;
-
-    gap: 10rem;
+  
 
     .title {
       font-size: 2rem;
@@ -117,6 +119,7 @@
 
     .left {
       width: 100%;
+      max-width: 40rem;
       height: 100%;
       box-sizing: border-box;
 
@@ -140,6 +143,7 @@
 
     .right {
       width: 100%;
+      max-width: 30rem;
       height: 100%;
       box-sizing: border-box;
       /* height: 100%; */
@@ -159,7 +163,6 @@
           display: flex;
           flex-direction: column;
           gap: 0.2rem;
-          width: 100%;
         }
 
         input[type="text"] {
@@ -170,7 +173,8 @@
           color: black;
           font-size: medium;
           box-sizing: border-box;
-          padding: 0.3rem;
+          font-size: large;
+          height: 3rem;
         }
 
         .box {
@@ -178,19 +182,16 @@
           box-sizing: border-box;
           gap: 1rem;
           height: fit-content;
+          // overflow: hidden;
 
           .side {
             flex: 1;
-            .text {
-              width: 100%;
-            }
           }
         }
 
         .content-tot {
           display: flex;
           align-items: center;
-/*           gap: 2rem; */
           
           .button {
             width: 15rem;
