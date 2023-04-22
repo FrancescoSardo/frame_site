@@ -1,0 +1,1 @@
+import{w as i}from"./index.d5d36601.js";let t=[];const a=i(t);a.subscribe(e=>{t=e});function n(e){t.push(e),a.set(t)}function o(e){let r=t.findIndex(c=>c==e);r!==-1&&t.splice(r,1)}function _(){return t}export{n as a,a as c,_ as g,o as r};

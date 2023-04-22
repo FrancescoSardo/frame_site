@@ -1,1 +1,0 @@
-import{w as t}from"./index.cebda1cd.js";const e=t(!0),r=t(!0),c=t(""),u={"/tamponi/.+~":{top:!0,bottom:!0},"/specchietti/.+~":{top:!0,bottom:!0}},a={top:!0,bottom:!1};c.subscribe(s=>{let b=s+"~";for(const[n,o]of Object.entries(u))if(b.match(n)){e.set(o.top),r.set(o.bottom);return}e.set(a.top),r.set(a.bottom)});export{r as b,c as r,e as t};
