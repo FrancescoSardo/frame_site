@@ -2,7 +2,7 @@
 	"name": "frame-sito-2",
 	"version": "0.0.1",
 	"private": true,
-	"homepage": "https://francescosardo.github.io/frame_site/",
+
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
