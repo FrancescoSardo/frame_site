@@ -63,7 +63,7 @@
   <div class="spacer-5 desktop-only" />
   <div class="container prezzo">€{valore_corrente}</div>
   <div class="container ordina noselect">
-    <div class="button">Ordina subito!</div>
+    <div class="button" on:click={add_to_cart}>Ordina subito!</div>
   </div>
   <div class="spacer-1" />
 </div>

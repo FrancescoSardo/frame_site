@@ -8,7 +8,17 @@
   import { degToRad, generateScene } from "$lib/utils/3D";
   import { add_item_to_cart } from "$lib/stores/cart";
   import { goto } from "$app/navigation";
-  import { AppendiceTamponeInfo, IncisioneTamponeInfo, ModelloTamponeInfo, type AppendiceTamponeType, type ModelloTamponeType } from "$lib/data/tampone";
+  import {
+    AppendiceTamponeInfo,
+    IncisioneTamponeInfo,
+    ModelloTamponeInfo,
+    type AppendiceTamponeType,
+    type ModelloTamponeType,
+  } from "$lib/data/tampone";
+  import { ANNO, MARCHE, MODELLO, Model_db } from "$lib/data/selezione-modello";
+
+  import ModelSelector from "$lib/components/ModelSelector.svelte";
+  import { bind } from "svelte/internal";
 
   export let data: PageData;
   let render_container: HTMLDivElement;
@@ -17,11 +27,30 @@
   let gallery_active = false;
   let tampone = data.tampone;
 
+  let marca: string;
+  let modello: string;
+  let anno: number;
+
+  let lista_modelli = Model_db;
+
+
+
   $: {
+    
     incisione_text = incisione_text.toUpperCase();
     if (incisione_text.length > 3) {
       incisione_text = incisione_text.slice(0, 3);
     }
+    if (marca != undefined) {
+      lista_modelli = Model_db.filter((item) => item.marca == marca);
+    }
+    if (modello != undefined) {
+      lista_modelli = Model_db.filter((item) => item.modello == modello);
+    }
+    if (anno != undefined) {
+      lista_modelli = Model_db.filter((item) => item.anno == anno);
+    }
+
   }
 
   function add_to_cart() {
@@ -32,14 +61,14 @@
   function select_appendice(appendice: string) {
     if (appendice in AppendiceTamponeInfo) {
       tampone.appendice = appendice as AppendiceTamponeType;
-      tampone = tampone
+      tampone = tampone;
     }
   }
 
   function select_model(model: string) {
     if (model in ModelloTamponeInfo) {
       tampone.modello = model as ModelloTamponeType;
-      tampone = tampone
+      tampone = tampone;
     }
   }
 
@@ -59,6 +88,7 @@
     }
 
     requestAnimationFrame(animate);
+    /* console.log(marca) */
   });
 </script>
 
@@ -73,29 +103,28 @@
   />
   <div class="content">
     <div class="display">
-
-    <div class="grid-container position-container">
-      <div class="position">
-        <!-- <img class="render" src={render_shark} alt="" /> -->
-        <div bind:this={render_container} class="render-container" />
+      <div class="grid-container position-container">
+        <div class="position">
+          <!-- <img class="render" src={render_shark} alt="" /> -->
+          <div bind:this={render_container} class="render-container" />
+        </div>
       </div>
-    </div>
-    <div class="grid-container galleria-container">
-      <div
-        class="galleria link"
-        on:click={() => {
-          gallery_active = true;
-        }}
-      >
-        Galleria
+      <div class="grid-container galleria-container">
+        <div
+          class="galleria link"
+          on:click={() => {
+            gallery_active = true;
+          }}
+        >
+          Galleria
+        </div>
       </div>
-    </div>
-    <div class="grid-container info-container">
-      <div class="info">
-        hai qualche <span>domanda?</span>
-        scrivi a questo numero<br /> +3987223423
+      <div class="grid-container info-container">
+        <div class="info">
+          hai qualche <span>domanda?</span>
+          scrivi a questo numero<br /> +3987223423
+        </div>
       </div>
-    </div>
     </div>
     <div class="form">
       <div class="titolo">Personalizza il tuo componente</div>
@@ -118,7 +147,7 @@
         />
       </ShopButton>
       <div class="divider" />
-      <div class="header">Appendice personalizzata: </div>
+      <div class="header">Appendice personalizzata:</div>
       {#each Object.entries(AppendiceTamponeInfo) as [key, appendice]}
         <ShopButton
           label={appendice.label}
@@ -128,18 +157,42 @@
         />
       {/each}
       <div class="divider" />
-      <div class="header">Modello moto: </div>
-      {#each Object.entries(ModelloTamponeInfo) as [key, modello]}
+      <div class="header">Modello moto:</div>
+      <div class="spacer-10"></div>
+      <!--    {#each Object.entries(ModelloTamponeInfo) as [key, modello]}
         <ShopButton
           label={modello.label}
           cost={modello.costo}
           selected={key === tampone.modello}
           onClick={() => select_model(key)}
         />
+      {/each} -->
+      <div class="model-selection-box">
+        <ModelSelector  options={MARCHE}   tipo="Marca"   bind:marca={marca}      />
+        <ModelSelector  options={MODELLO}  tipo="Modello" bind:modello={modello}/>
+        <ModelSelector  options={ANNO} tipo="Anno"        bind:anno={anno} />
+ 
+      </div>
+      <div class="spacer-9"></div>
+      <div class="listamodelli">
+        {#each lista_modelli as lista, index}
+        <div class="item_" on:click={() => {
+          //selected = index;
+          //active = false;
+          
+          /* ------------------------------- */
+        }}>{lista.marca} {lista.modello} {lista.anno}</div>
+        {#if (lista.length < - 1)}
+          <div class="divider" />
+        {/if}
       {/each}
+      </div>
+    <!--   <div class="spacer-10" />
+      <div class="spacer-10" />
+      <div class="spacer-10" /> -->
     </div>
   </div>
-  <PriceBar tampone={tampone} {add_to_cart} />
+  <PriceBar {tampone} {add_to_cart} />
 </div>
 
 <style lang="scss">
@@ -180,9 +233,15 @@
           height: 100%;
         }
 
-        .position-container { grid-area: position; }
-        .galleria-container { grid-area: galleria; }
-        .info-container { grid-area: info; }
+        .position-container {
+          grid-area: position;
+        }
+        .galleria-container {
+          grid-area: galleria;
+        }
+        .info-container {
+          grid-area: info;
+        }
 
         .galleria {
           grid-area: galleria;
@@ -247,6 +306,13 @@
       }
 
       .form {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+
+        gap: 1.5rem;
         .incisione-text {
           width: 8rem;
           height: 2rem;
@@ -277,13 +343,52 @@
           font-size: large;
         }
         /* border: 5px solid green; */
-        flex: 1;
-        padding: 2rem;
-        overflow-y: scroll;
+        .model-selection-box {
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          flex-direction: column;
+          gap: 2rem;
+          padding: 0rem;
+        }
+        .listamodelli{
+          display: flex;
+          min-height: calc(100% - 50vh);
+          border: grey solid 1px;
+          border-radius: 0.4rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          padding: 1rem;
+          flex: 1;
+          .divider{
+            align-self: center;
+            min-height: 0.1rem;
+            min-width: 30rem;
+            /* max-width: 60%; */
+            background-color: rgb(203, 203, 203);
+          }
+        }
+        .item_{
+          /* box-sizing: border-box; */
+        height: 1rem;
         display: flex;
-        flex-direction: column;
-
-        gap: 1.5rem;
+        justify-content: center;
+        align-items: center;
+        /* background-color: red; */
+        /* background-color: white; */
+        padding: 1rem;
+        border-radius: 0.4rem;
+        border-width: 2px;
+        border: solid white 2px;
+        }
+        .item_:hover{
+          transition: border ease 0.5s;
+          
+          border-width: 2px;
+          border-color: #0085ff;
+          cursor: pointer;
+        }
       }
     }
   }

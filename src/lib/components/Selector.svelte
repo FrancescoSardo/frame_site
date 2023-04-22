@@ -30,7 +30,7 @@
 <style lang="scss">
   .selector {
     --selector-width: 12rem;
-
+    z-index: 10000;
     width: var(--selector-width);
     height: 4rem;
 
@@ -57,6 +57,7 @@
         justify-content: center;
         align-items: center;
         grid-row: 1;
+        
       }
 
       .text {
@@ -77,6 +78,7 @@
     }
 
     .selected.active {
+      
       background-color: rgb(240, 240, 240);
 
       .arrow {
@@ -87,6 +89,7 @@
     }
 
     .options {
+      z-index: 10000;
       transition: opacity 0.2s ease;
       opacity: 1;
 
@@ -96,7 +99,8 @@
       position: absolute;
       top: 4.5rem;
       left: 0;
-
+      /* background-color: rgb(240, 240, 240); */
+      background-color: white;
       border: 2px solid rgb(184, 184, 184);
       box-sizing: border-box;
       width: var(--selector-width);
@@ -110,11 +114,13 @@
       }
 
       .item {
+        z-index: 1000;
         height: 2rem;
         display: flex;
         justify-content: center;
         align-items: center;
-
+        /* background-color: red; */
+        background-color: white;
         padding: 0.5rem;
       }
 
@@ -124,7 +130,6 @@
     }
 
     .options:not(.active) {
-      
       opacity: 0;
       // display: none;
     }

@@ -27,7 +27,7 @@ export let no_hover: boolean = false;
   min-height: 5rem;
 
   width: 100%;
-  border: 3px solid var(--color-var0);
+  border: 2px solid var(--color-var0);
 
   gap: 1rem;
 

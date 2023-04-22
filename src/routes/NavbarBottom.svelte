@@ -62,7 +62,7 @@
 
     height: var(--navbar-height-2);
 
-    border-bottom: 2px solid black;
+    /* border-bottom: 2px solid black; */
     box-sizing: border-box;
 
     align-items: center;

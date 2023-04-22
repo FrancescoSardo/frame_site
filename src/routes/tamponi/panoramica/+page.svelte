@@ -4,6 +4,12 @@
   import { generateScene } from "$lib/utils/3D";
   import { onMount, onDestroy } from "svelte";
 
+  let active_page;
+
+  $:{
+      let active_page;
+    }
+
   function scroll_handler() {
     let delta = panoramica_element.scrollTop - last_scroll;
     last_scroll = panoramica_element.scrollTop;
@@ -13,13 +19,15 @@
     } else {
       top_navbar_active.set(false);
     }
+   
   }
 
   let panoramica_element: HTMLDivElement;
   let render_container: HTMLDivElement;
   let last_scroll = 0;
 
-  onMount(async () => {
+  onMount( () => {
+
     // let { renderer, scene, camera } = await generateScene(render_container, "/long.gltf");
 
     function animate(time: number) {
@@ -29,39 +37,61 @@
     }
 
     requestAnimationFrame(animate);
-  });
+  
 
   // onMount(() => {
-  //   // let elements = document.querySelectorAll(".page");
+   let elements = document.querySelectorAll(".page");
 
-  //   // let observer = new IntersectionObserver(
-  //   //   (entries) => {
-  //   //     for (let entry of entries) {
-  //   //       if (entry.isIntersecting) {
-  //   //         let value = entry.target.id.charAt(4);
-  //   //         active_page = parseInt(value);
-  //   //       }
-  //   //     }
-  //   //   },
-  //   //   { threshold: [0.5] }
-  //   // );
+   let observer = new IntersectionObserver(
+     (entries) => {
+      for (let entry of entries) {
+        if (entry.isIntersecting) {
+          console.log("test", entry.target.id )
+          /* element.classList.add("my-class"); */
+          var element = document.getElementById(entry.target.id);
+          element?.classList.add("in-page");
+          /* let value = entry.target.id.charAt(4);
+          active_page = parseInt(value); */
+        }else{
+          var element = document.getElementById(entry.target.id);
+          element?.classList.remove("in-page");
+        }
+      }
+    },
+    { threshold: [0.5] }
+  );
 
-  //   // for (let element of elements) {
-  //   //   observer.observe(element);
-  //   // }
-  // });
+  for (let element of elements) {
+    observer.observe(element);
+  }
+  });
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->
-<div class="panoramica" on:scroll={scroll_handler} bind:this={panoramica_element}>
-  <div class="page" id="page1">
-    <video autoplay muted loop src={video_render}></video>
+<div
+  class="panoramica"
+  
+  on:scroll={scroll_handler}
+  bind:this={panoramica_element}
+>
+  <div class="page in-page" id="page1">
+    <video autoplay muted loop src={video_render} />
     <div class="blur" />
   </div>
-  <div class="page" id="page2">
+  <div class="page in-page"  id="page2">
     <div class="render-container" bind:this={render_container} />
     <div class="title">Più di un semplice tampone</div>
-    <div class="text">Migliora la tua esperienza di guida in moto con il nostro tampone aereodinamico. Grazie alle sue appendici intercambiabili, potrai scegliere quella che meglio si adatta al tuo stile e alle tue esigenze. Inoltre, la sua costruzione resistente e durevole ti garantirà prestazioni elevate e durature.</div>
+    <div class="text">
+      Migliora la tua esperienza di guida in moto con il nostro tampone
+      aereodinamico. 
+      <span>
+             Grazie alle sue appendici intercambiabili, potrai scegliere
+        quella che meglio si adatta al tuo stile e alle tue esigenze. Inoltre, la
+        sua costruzione resistente e durevole ti garantirà prestazioni elevate e
+        durature.
+      </span>
+    </div>
+   
   </div>
   <div class="page" id="page3">3</div>
   <div class="page" id="page4">4</div>
@@ -81,18 +111,75 @@
 
     // scroll-snap-type: y mandatory;
     scrollbar-width: none;
+    .page {      
+      color: white;      
+      scroll-snap-align: start;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all ease-in 4s;
+      .text{
+        color: white;
+        transform: translateX(5vh);
+        transition: all ease-in 4s;
+      }
+      .title{
+        color: white;
+        transform: translateX(5vh);
+        transition: all ease-in 4s;
+      }
+      span{
+        text-align: end;
+        color: white;
+        transform: translateY(5vh);
+        transition: all ease-in 4s;
+      }
+    }
 
+    .in-page{
+      
+      /* transform: translateY(0vh); */
+      /* transition: all ease-in 2s; */
+      .title{
+        color: black;
+        /* transform: translateY(0vh); */
+        transform: translateX(0vh);
+        transition: all ease-in 2s;
+      }
+      .text{
+        color: grey;
+        transform: translateX(0vh);;
+        transition: all ease-in 2s;
+      }
+      span{
+        text-align: end;
+        color: grey;
+        /* transform: translateY(0vh); */
+        transition: all ease-in 3s;
+      }
+      /* #page2.text{
+        color: red;
+      } */
+    }
+  
     .page:first-child {
+
+      z-index: -1;
       position: relative;
       overflow: hidden;
       // border: 5px solid red;
-      
+      /* .test{
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: white;
+        font-size: 5rem;
+      } */
       video {
         width: 100%;
         // max-height: 100%;
-        height: 120%;
-        
-        object-fit: contain;
+        height: 100vh;
+
+        object-fit: cover;
       }
 
       .blur {
@@ -101,12 +188,17 @@
         height: 2rem;
         width: 100%;
         // background-color: red;
-        background: rgb(0,0,0);
-        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(255,255,255,1) 50%); 
+        background: rgb(0, 0, 0);
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(255, 255, 255, 1) 50%
+        );
       }
     }
 
     .page:nth-child(2) {
+      
       display: grid;
 
       grid-template-columns: 50vw 1fr;
@@ -130,20 +222,26 @@
         grid-row: 2;
 
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-around;
+
+
 
         font-size: 2rem;
-        color: gray;
+        /* color: gray; */
+      }
+      span{
+        
       }
 
       .render-container {
         grid-column: 1;
         grid-row: 2;
-        
+
         display: flex;
         justify-content: center;
         align-items: center;
-        
+
         border: 5px solid red;
 
         canvas {
@@ -160,15 +258,7 @@
       padding: 0 2rem;
     }
 
-    .page {
-      scroll-snap-align: start;
-
-      width: 100%;
-      // height: 100%;
-
-      /* border: 5px solid red; */
-      box-sizing: border-box;
-    }
+    
   }
 
   @media (max-width: 768px) {
