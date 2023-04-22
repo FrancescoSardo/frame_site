@@ -1,4 +1,5 @@
 <script lang="ts">
+
   import "$lib/styles/global.scss";
   import { onMount } from "svelte";
   import NavbarTop from "./NavbarTop.svelte";
