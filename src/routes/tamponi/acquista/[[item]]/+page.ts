@@ -3,7 +3,7 @@ import { getShopStore, shop_store } from '$lib/stores/shop';
 import type { PageLoad } from './$types';
 
 export const load = (({ params }) => {
-  let tampone = getShopStore()
+  let tampone = getShopStore() || undefined
 
   return {
     tampone
