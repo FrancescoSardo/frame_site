@@ -33,9 +33,9 @@
         ]}
       />
 
-      <div class="image">
-        <!-- //////// -->
-      </div>
+     <!--  <div class="image">
+        <!-- ////////
+      </div> -->
 
       <div class="material-content">
         <div class="material">
@@ -67,7 +67,7 @@
       <div class="content-tec">
         <div class="spacer-1" />
         <div class="cc">
-          <div class="text">A livello tecnico</div>
+          <div class="text">Tecnico</div>
           <div class="line" />
         </div>
       </div>
@@ -76,7 +76,7 @@
       <div class="content-tec">
         <div class="spacer-1" />
         <div class="cc">
-          <div class="text">A livello di design</div>
+          <div class="text">Design</div>
           <div class="line" />
         </div>
       </div>
@@ -106,9 +106,9 @@
         ]}
       />
 
-      <div class="image">
-        <!-- //////// -->
-      </div>
+     <!--  <div class="image">
+        <!-- //////// 
+      </div> -->
 
       <div class="material-content">
         <div class="material">
@@ -139,7 +139,7 @@
 
       <div class="content-tec">
         <div class="cc">
-          <div class="text">A livello tecnico</div>
+          <div class="text">tecnico</div>
           <div class="line" />
         </div>
         <div class="spacer-1" />
@@ -148,7 +148,7 @@
       <div class="img" />
       <div class="content-tec">
         <div class="cc">
-          <div class="text">A livello tecnico</div>
+          <div class="text">tecnico</div>
           <div class="line" />
         </div>
         <div class="spacer-1" />
@@ -193,7 +193,7 @@
         box-sizing: border-box;
         margin-top: 20px;
         
-        height: 100vh;
+        height: 150vh;
 
         display: flex;
         
@@ -264,6 +264,7 @@
           display: flex;
           text-align: left;
           width: 100%;
+          max-height: 28px;
           .cc {
             flex: 5;
             display: flex;
@@ -294,7 +295,7 @@
         box-sizing: border-box;
         margin-top: 20px;
         
-        height: 100vh;
+        height: 150vh;
 
         display: flex;
         
@@ -363,6 +364,7 @@
           }
         }
         .content-tec {
+          max-height: 28px;
           display: flex;
           text-align: left;
           width: 100%;
@@ -391,5 +393,20 @@
         }
       }
     }
+  }
+
+  @media (max-width: 768px) {
+    .confronta{
+    /*   .content{
+        .left{
+        height: 200vh;
+      }
+      .right{
+        height: 200vh;
+      }
+      } */
+    
+    }
+
   }
 </style>
