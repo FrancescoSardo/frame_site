@@ -8,6 +8,10 @@ export let Model_db:  item[] = [
   { marca: "Audi", modello: "4", anno: 2019 },
   { marca: "Bmw", modello: "2", anno: 2019 },
   { marca: "Skoda", modello: "1", anno: 2023 },
+  { marca: "Skoda", modello: "1", anno: 2023 },
+  { marca: "Skoda", modello: "1", anno: 2023 },
+  { marca: "Skoda", modello: "1", anno: 2023 },
+  { marca: "Skoda", modello: "1", anno: 2023 },
 ]
 
 

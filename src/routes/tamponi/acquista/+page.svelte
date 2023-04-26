@@ -352,8 +352,11 @@
           padding: 0rem;
         }
         .listamodelli{
+          flex: 1;
           display: flex;
           min-height: calc(100% - 50vh);
+          max-height:  100vh;
+          overflow: scroll;
           border: grey solid 1px;
           border-radius: 0.4rem;
           display: flex;

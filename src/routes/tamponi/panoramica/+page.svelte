@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import video_render from "$lib/assets/video_render.mp4";
   import { top_navbar_active } from "$lib/stores/navbar";
   import { generateScene } from "$lib/utils/3D";
@@ -98,7 +99,10 @@
   <div class="page" id="page5">5</div>
   <div class="page" id="page6">6</div>
   <div class="page" id="page7">7</div>
-  <div class="float-acquista mobile-only">Acquista</div>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div class="float-acquista mobile-only"  on:click={() => {
+    goto("/frame_site/tamponi/acquista");
+  }}>Acquista</div>
 </div>
 
 <style lang="scss">
@@ -106,7 +110,7 @@
     width: 100%;
     height: 100%;
     overflow-y: scroll;
-
+    overflow-x: hidden;
     scroll-behavior: smooth;
 
     // scroll-snap-type: y mandatory;
@@ -123,7 +127,7 @@
         transition: all ease-in 4s;
       }
       .title{
-        color: white;
+        color: transparent;
         transform: translateX(5vh);
         transition: all ease-in 4s;
       }
@@ -151,7 +155,7 @@
         transition: all ease-in 2s;
       }
       span{
-        text-align: end;
+        text-align: center;
         color: grey;
         /* transform: translateY(0vh); */
         transition: all ease-in 3s;
@@ -263,9 +267,26 @@
 
   @media (max-width: 768px) {
     .panoramica {
+
       .page:first-child {
         height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2));
       }
+      .page:nth-child(2){
+        .title{
+          font-size: 3rem;
+          font-size:3rem;
+        }
+        .text{
+          font-size: 1rem;
+        }
+      }
+      .page:not(:first-child) {
+      padding: 0rem;
+    }
+
+
+     
+     
     }
 
     @keyframes glowing {

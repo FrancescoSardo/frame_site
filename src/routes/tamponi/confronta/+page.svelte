@@ -32,6 +32,7 @@
           },
         ]}
       />
+
       <div class="image">
         <!-- //////// -->
       </div>
@@ -41,7 +42,7 @@
           <div class="circle" />
           <div class="text">Carbonio</div>
         </div>
-     <!--    <div class="material">
+        <!--    <div class="material">
           <div class="circle" />
           <div class="text">Carbonio</div>
         </div> -->
@@ -52,7 +53,15 @@
       <div class="content-box">
         <div class="text">a partire da</div>
         <div class="price">99$</div>
-        <div class="button" on:click={() => { goto("/frame_site/tamponi/panoramica");}}>acquista</div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div
+          class="button"
+          on:click={() => {
+            goto("/frame_site/tamponi/panoramica");
+          }}
+        >
+          acquista
+        </div>
       </div>
 
       <div class="content-tec">
@@ -62,19 +71,17 @@
           <div class="line" />
         </div>
       </div>
-      <div class="img"/>
-      <div class="img"/>
+      <div class="img" />
+      <div class="img" />
       <div class="content-tec">
         <div class="spacer-1" />
         <div class="cc">
-          
           <div class="text">A livello di design</div>
           <div class="line" />
         </div>
-        
       </div>
-      <div class="img"/>
-      <div class="img"/>
+      <div class="img" />
+      <div class="img" />
     </div>
 
     <div class="right">
@@ -98,8 +105,7 @@
           },
         ]}
       />
-      <!-- <div class="spacer"></div> -->
-      <!-- <div class="spacer-4"></div> -->
+
       <div class="image">
         <!-- //////// -->
       </div>
@@ -109,7 +115,7 @@
           <div class="circle" />
           <div class="text">Carbonio</div>
         </div>
-    <!--     <div class="material">
+        <!--     <div class="material">
           <div class="circle" />
           <div class="text">Carbonio</div>
         </div> -->
@@ -120,29 +126,35 @@
       <div class="content-box">
         <div class="text">a partire da</div>
         <div class="price">99$</div>
-        <div class="button" on:click={() => { goto("/frame_site/tamponi/panoramica");}}>acquista</div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div
+          class="button"
+          on:click={() => {
+            goto("/frame_site/tamponi/panoramica");
+          }}
+        >
+          acquista
+        </div>
       </div>
 
       <div class="content-tec">
-        
         <div class="cc">
           <div class="text">A livello tecnico</div>
           <div class="line" />
         </div>
         <div class="spacer-1" />
       </div>
-      <div class="img"/>
-      <div class="img"/>
+      <div class="img" />
+      <div class="img" />
       <div class="content-tec">
-        
         <div class="cc">
           <div class="text">A livello tecnico</div>
           <div class="line" />
         </div>
         <div class="spacer-1" />
       </div>
-      <div class="img"/>
-      <div class="img"/>
+      <div class="img" />
+      <div class="img" />
     </div>
   </div>
 </div>
@@ -177,20 +189,20 @@
       height: 100vh;
       /* border: 1px solid black; */
       .right {
-        margin-top: 20px; /* ;----------------- */
-        flex: 1;
+        justify-content: space-around;
+        box-sizing: border-box;
+        margin-top: 20px;
+        
         height: 100vh;
-        gap: 1rem;
+
         display: flex;
-        /* justify-content: flex-start; */
+        
         align-items: center;
         flex-direction: column;
-        /* -------------- /!  */
-        /* gap: 2rem; */
-        /* -------------- */
+        flex: 1;
         .image {
-          width: 15rem;
-          height: 15rem;
+          min-width: 15rem;
+          min-height: 15rem;
           background-color: green;
           border-radius: 20%;
         }
@@ -210,7 +222,6 @@
           }
         }
         .line {
-          
           max-width: 15rem;
           background-color: grey;
         }
@@ -266,36 +277,34 @@
               height: 30px;
               background-color: grey;
             }
-            .text{
+            .text {
               font-size: x-large;
             }
           }
         }
-        .img{
+        .img {
           background-color: grey;
           width: 100px;
           height: 100px;
-          border-radius: 20%;          
+          border-radius: 20%;
         }
-        
       }
       .left {
-        margin-top: 20px; /* ;----------------- */
-        flex: 1;
+        justify-content: space-around;
+        box-sizing: border-box;
+        margin-top: 20px;
+        
         height: 100vh;
-        /* padding: 20px; */
+
         display: flex;
-        /* justify-content: flex-start; */
+        
         align-items: center;
         flex-direction: column;
-        gap: 1rem;
-        /* -------------- */
-        /* gap: 2rem; */
-        /* -------------- */
-        overflow-x: scroll;
+        flex: 1;
+        
         .image {
-          width: 15rem;
-          height: 15rem;
+          min-width: 15rem;
+          min-height: 15rem;
           background-color: red;
           border-radius: 20%;
         }
@@ -369,18 +378,17 @@
               height: 3px;
               background-color: grey;
             }
-            .text{
+            .text {
               font-size: x-large;
             }
           }
         }
-        .img{
+        .img {
           background-color: grey;
-          width: 100px;
-          height: 100px;  
-          border-radius: 20%;          
+          min-width: 100px;
+          min-height: 100px;
+          border-radius: 20%;
         }
-        
       }
     }
   }

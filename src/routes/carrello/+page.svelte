@@ -1,4 +1,4 @@
-<script lang="ts">
+  <script lang="ts">
   import type { PageData } from "./$types";
   import render_shark from "$lib/assets/render_shark.png";
   import PriceBox from "./PriceBox.svelte";
@@ -60,7 +60,6 @@
           <div class="text">Cap</div>
           <input type="text" class="text" maxlength="5" />
         </div>
-
         <div class="cont side">
           <div class="text">Città</div>
           <input type="text" class="text" />
@@ -231,5 +230,38 @@
         }
       }
     }
+  }
+  @media (max-width: 768px) {
+    .carrello{
+      flex-direction: column;
+      /* s */
+      overflow: scroll;
+      
+      /* margin-top: var(--navbar-height-2); */
+
+      /* height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2)); */
+      .left{  
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        margin-top: 30rem;
+      }
+      .right{
+        .input-content{
+          gap: 1rem;
+          .box{
+            flex-direction: column;
+        }
+        }
+        
+        .content-tot{
+          padding: 2rem;
+          gap: 1rem;
+        }
+      }
+    }
+
   }
 </style>
