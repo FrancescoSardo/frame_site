@@ -1,6 +1,44 @@
 <script lang="ts">
   import Selector from "$lib/components/Selector.svelte";
   import { goto } from "$app/navigation";
+  import { bind, onMount } from "svelte/internal";
+
+    import { ConfInfo, type conftype } from "$lib/data/confronta";
+  import { Tampone } from "$lib/data/tampone";
+
+  let selected_L : conftype = "Long";
+  let selected_R : conftype = "Long";
+
+
+  let descD1 : Array<string>;
+  let descD2 : Array<string>;
+   
+  let descL1 : Array<string>;
+  let descL2 : Array<string>;
+  
+  
+
+  $:{
+    let i = 0;
+      while(Object.values(ConfInfo)[i]){
+        if(Object.values(ConfInfo)[i].label == selected_L){
+          descD1 = Object.values(ConfInfo)[i].descD;
+          descD2 = Object.values(ConfInfo)[i].descT;
+        }
+        if(Object.values(ConfInfo)[i].label == selected_R){
+          descL1 = Object.values(ConfInfo)[i].descD;
+          descL2 = Object.values(ConfInfo)[i].descT;
+        }
+      
+        i++;
+      }
+      console.log(descD1)
+      console.log(descL1)
+    
+  }
+  
+  
+
 </script>
 
 <div class="confronta">
@@ -13,24 +51,26 @@
   <div class="content">
     <div class="left">
       <Selector
+        bind:selected_L={selected_L}
         options={[
           {
-            label: "Specchietto",
-            value: "specchietto",
+            label: "Long",
+            value: "Long",
           },
           {
-            label: "Tamponi",
-            value: "tamponi",
+            label: "Shark",
+            value: "Shark",
           },
           {
-            label: "Tamponi",
-            value: "tamponi",
+            label: "Plane",
+            value: "Plane",
           },
           {
-            label: "Tamponi",
-            value: "tamponi",
+            label: "Tampone",
+            value: "Tampone",
           },
         ]}
+        
       />
 
      <!--  <div class="image">
@@ -86,24 +126,25 @@
 
     <div class="right">
       <Selector
-        options={[
-          {
-            label: "Specchietto",
-            value: "specchietto",
-          },
-          {
-            label: "Tamponi",
-            value: "tamponi",
-          },
-          {
-            label: "Tamponi",
-            value: "tamponi",
-          },
-          {
-            label: "Tamponi",
-            value: "tamponi",
-          },
-        ]}
+      bind:selected_R={selected_R}
+      options={[
+        {
+          label: "Long",
+          value: "Long",
+        },
+        {
+          label: "Shark",
+          value: "Shark",
+        },
+        {
+          label: "Plane",
+          value: "Plane",
+        },
+        {
+          label: "Tampone",
+          value: "Tampone",
+        },
+      ]}
       />
 
      <!--  <div class="image">

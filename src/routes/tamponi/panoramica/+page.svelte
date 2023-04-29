@@ -4,6 +4,7 @@
   import { top_navbar_active } from "$lib/stores/navbar";
   import { generateScene } from "$lib/utils/3D";
   import { onMount, onDestroy } from "svelte";
+  import Pagina3 from "./Pagina3.svelte";
 
   let active_page;
 
@@ -79,7 +80,7 @@
     <video autoplay muted loop src={video_render} />
     <div class="blur" />
   </div>
-  <div class="page in-page"  id="page2">
+  <div class="in-page page"  id="page2">
     <div class="render-container" bind:this={render_container} />
     <div class="title">Più di un semplice tampone</div>
     <div class="text">
@@ -94,7 +95,9 @@
     </div>
    
   </div>
-  <div class="page" id="page3">3</div>
+  <div class="page" id="page3">
+    <Pagina3 />
+  </div>
   <div class="page" id="page4">4</div>
   <div class="page" id="page5">5</div>
   <div class="page" id="page6">6</div>
@@ -112,8 +115,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-behavior: smooth;
-
-    // scroll-snap-type: y mandatory;
     scrollbar-width: none;
     .page {      
       color: white;      
@@ -132,17 +133,15 @@
         transition: all ease-in 4s;
       }
       span{
-        text-align: end;
+        text-align: center;
         color: white;
         transform: translateY(5vh);
         transition: all ease-in 4s;
       }
     }
+    
 
     .in-page{
-      
-      /* transform: translateY(0vh); */
-      /* transition: all ease-in 2s; */
       .title{
         color: black;
         /* transform: translateY(0vh); */
@@ -157,12 +156,20 @@
       span{
         text-align: center;
         color: grey;
-        /* transform: translateY(0vh); */
         transition: all ease-in 3s;
       }
-      /* #page2.text{
+      #page2.text{
         color: red;
-      } */
+      } 
+      .pagina3{
+        .right3{
+          color: black;
+        }
+        .left3{
+        color: black;
+        }
+      }
+      
     }
   
     .page:first-child {

@@ -1,9 +1,13 @@
 <script lang="ts">
+  import type { conftype } from "$lib/data/confronta";
+
 
   let selected = 0;
   let active = false;
 
   export let options: { label: string, value: string }[] = [];
+  export let selected_L: conftype;
+  export let selected_R: conftype;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -19,6 +23,13 @@
       <div class="item" on:click={() => {
         selected = index;
         active = false;
+        
+        if(selected_L != undefined){
+          selected_L = option.label 
+        }
+        if(selected_R != undefined){
+          selected_R = option.label 
+        }
       }}>{option.label}</div>
       {#if index < options.length - 1}
         <div class="divider" />
