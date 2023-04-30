@@ -5,7 +5,12 @@
   import type { PageData } from "./$types";
   import Galleria from "./Galleria.svelte";
   import PriceBar from "./PriceBar.svelte";
-  import { degToRad, generateScene } from "$lib/utils/3D";
+  import {
+    degToRad,
+    createScene,
+    loadObject,
+    loadObjectAsync,
+  } from "$lib/utils/3D";
   import { add_item_to_cart } from "$lib/stores/cart";
   import { goto } from "$app/navigation";
   import {
@@ -19,6 +24,7 @@
 
   import ModelSelector from "$lib/components/ModelSelector.svelte";
   import { bind } from "svelte/internal";
+  import type { Object3D } from "three";
 
   export let data: PageData;
   let render_container: HTMLDivElement;
@@ -27,30 +33,32 @@
   let gallery_active = false;
   let tampone = data.tampone;
 
-  let marca: string;
-  let modello: string;
-  let anno: number;
+  let marca: string = "";
+  let modello: string = "";
+  let anno: string = "";
 
   let lista_modelli = Model_db;
 
+  let tamponi3D: { [key in string]: Object3D } = {};
 
+  let scene: THREE.Scene;
 
   $: {
-    
     incisione_text = incisione_text.toUpperCase();
     if (incisione_text.length > 3) {
       incisione_text = incisione_text.slice(0, 3);
     }
-    if (marca != undefined) {
-      lista_modelli = Model_db.filter((item) => item.marca == marca);
-    }
-    if (modello != undefined) {
-      lista_modelli = Model_db.filter((item) => item.modello == modello);
-    }
-    if (anno != undefined) {
-      lista_modelli = Model_db.filter((item) => item.anno == anno);
-    }
+    lista_modelli = Model_db;
 
+    if (marca != "") {
+      lista_modelli = lista_modelli.filter((item) => item.marca == marca);
+    }
+    if (modello != "") {
+      lista_modelli = lista_modelli.filter((item) => item.modello == modello);
+    }
+    if (anno != "") {
+      lista_modelli = lista_modelli.filter((item) => item.anno == Number.parseInt(anno));
+    }
   }
 
   function add_to_cart() {
@@ -60,6 +68,9 @@
 
   function select_appendice(appendice: string) {
     if (appendice in AppendiceTamponeInfo) {
+      scene.remove(tamponi3D[tampone.appendice]);
+      scene.add(tamponi3D[appendice as AppendiceTamponeType]);
+
       tampone.appendice = appendice as AppendiceTamponeType;
       tampone = tampone;
     }
@@ -73,13 +84,30 @@
   }
 
   onMount(async () => {
-    let { renderer, scene, camera, item } = await generateScene(
-      render_container,
-      "/long.gltf"
-    );
-    camera.position.z = 250;
+    loadObjectAsync("/solo_tampone.gltf", (obj) => {
+      tamponi3D["nessuna"] = obj;
+      scene.add(tamponi3D["nessuna"]);
+    });
 
-    item.rotateY(degToRad(-140));
+    loadObjectAsync("/long.gltf", (obj) => {
+      tamponi3D["long"] = obj;
+    });
+
+    loadObjectAsync("/plane.gltf", (obj) => {
+      tamponi3D["dip"] = obj;
+    });
+
+    loadObjectAsync("/shark.gltf", (obj) => {
+      tamponi3D["squalo"] = obj;
+    });
+
+    let sceneData = await createScene(render_container);
+    scene = sceneData.scene;
+
+    let renderer = sceneData.renderer;
+    let camera = sceneData.camera;
+
+    // camera.position.z = 250;
 
     function animate(time: number) {
       requestAnimationFrame(animate);
@@ -158,7 +186,7 @@
       {/each}
       <div class="divider" />
       <div class="header">Modello moto:</div>
-      <div class="spacer-10"></div>
+      <div class="spacer-10" />
       <!--    {#each Object.entries(ModelloTamponeInfo) as [key, modello]}
         <ShopButton
           label={modello.label}
@@ -168,26 +196,31 @@
         />
       {/each} -->
       <div class="model-selection-box">
-        <ModelSelector  options={MARCHE}   tipo="Marca"   bind:marca={marca}      />
-        <ModelSelector  options={MODELLO}  tipo="Modello" bind:modello={modello}/>
-        <ModelSelector  options={ANNO} tipo="Anno"        bind:anno={anno} />
- 
+        <ModelSelector options={MARCHE} text="Marca" bind:value={marca} />
+        <ModelSelector options={MODELLO} text="Modello" bind:value={modello} />
+        <ModelSelector options={ANNO.map(anno => anno.toString())} text="Anno" bind:value={anno} />
       </div>
-      <div class="spacer-9"></div>
+      <div class="spacer-9" />
       <div class="listamodelli">
         {#each lista_modelli as lista, index}
-        <div class="item_" on:click={() => {
-          //selected = index;
-          //active = false;
-          
-          /* ------------------------------- */
-        }}>{lista.marca} {lista.modello} {lista.anno}</div>
-        {#if (lista.length < - 1)}
-          <div class="divider" />
-        {/if}
-      {/each}
+          <div
+            class="item_"
+            on:click={() => {
+              //selected = index;
+              //active = false;
+              /* ------------------------------- */
+            }}
+          >
+            {lista.marca}
+            {lista.modello}
+            {lista.anno}
+          </div>
+          <!-- {#if lista.length < -1}
+            <div class="divider" />
+          {/if} -->
+        {/each}
       </div>
-    <!--   <div class="spacer-10" />
+      <!--   <div class="spacer-10" />
       <div class="spacer-10" />
       <div class="spacer-10" /> -->
     </div>
@@ -351,46 +384,48 @@
           gap: 2rem;
           padding: 0rem;
         }
-        .listamodelli{
-          flex: 1;
+        .listamodelli {
           display: flex;
-          min-height: calc(100% - 50vh);
-          max-height:  100vh;
-          overflow: scroll;
+
+          min-height: 10rem;
+          height: 10rem;
+
+          overflow-y: scroll;
           border: grey solid 1px;
           border-radius: 0.4rem;
           display: flex;
           flex-direction: column;
           gap: 1rem;
           padding: 1rem;
-          flex: 1;
-          .divider{
+          
+          .divider {
             align-self: center;
             min-height: 0.1rem;
             min-width: 30rem;
             /* max-width: 60%; */
             background-color: rgb(203, 203, 203);
           }
-        }
-        .item_{
-          /* box-sizing: border-box; */
-        height: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* background-color: red; */
-        /* background-color: white; */
-        padding: 1rem;
-        border-radius: 0.4rem;
-        border-width: 2px;
-        border: solid white 2px;
-        }
-        .item_:hover{
-          transition: border ease 0.5s;
           
-          border-width: 2px;
-          border-color: #0085ff;
-          cursor: pointer;
+          .item_ {
+            /* box-sizing: border-box; */
+            height: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: red; */
+            /* background-color: white; */
+            padding: 1rem;
+            border-radius: 0.4rem;
+            border-width: 2px;
+            border: solid white 2px;
+          }
+          .item_:hover {
+            transition: border ease 0.5s;
+
+            border-width: 2px;
+            border-color: #0085ff;
+            cursor: pointer;
+          }
         }
       }
     }

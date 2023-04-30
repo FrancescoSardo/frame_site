@@ -1,48 +1,41 @@
 <script lang="ts">
   import type { item } from "$lib/data/selezione-modello";
 
-
-  let selected = -1;
   let active = false;
-  
-  export let tipo : string;
 
-  export let marca: String; 
-  export let modello: String;
-  export let anno: Number;
-
-
-  export let options: String[];
+  export let text: string;
+  export let value: string = ""
+  export let options: string[];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="selector-box">
-  <div class="selected" class:active on:click={() => {
-    active = !active
-    
-    } }>
-    <div class="text">{tipo}:  
-    {#if selected == -1} 
-    
-    {/if}
-    {#if selected != -1}
-    {options[selected]
-    }
-    {/if}  
-       </div>
-    <div class="arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chevron-down</title><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg></div>
+  <div
+    class="selected"
+    class:active
+    on:click={() => {
+      active = !active;
+    }}
+  >
+    <div class="text">
+      {text}: {value}
+    </div>
+    <div class="arrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        ><title>chevron-down</title><path
+          d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+        /></svg
+      >
+    </div>
   </div>
   <div class="options" class:active>
     {#each options as option, index}
       <div class="item" on:click={() => {
-        selected = index;
-        active = false;
-        
-        if(tipo=="Marca"){marca = options[selected] ; }
-        if(tipo=="Modello"){modello = options[selected] ; }
-        if(tipo=="anno"){anno = options[selected] ; }
-        /* ------------------------------- */
-      }}>{options[index]}</div>
+        value = option
+        active = false
+      }}>
+        {option}
+      </div>
       {#if index < options.length - 1}
         <div class="divider" />
       {/if}
@@ -51,7 +44,7 @@
 </div>
 
 <style lang="scss">
-  .selector-box{
+  .selector-box {
     --selector-width: 100%;
     width: var(--selector-width);
     height: 4rem;
@@ -59,7 +52,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    .selected{
+    .selected {
       border: 2px solid rgb(191, 191, 191);
       border-radius: 0.6rem;
       display: flex;
@@ -67,12 +60,12 @@
       align-items: center;
       gap: 1rem;
       padding: 2%;
-      .text{
+      .text {
         color: grey;
         font-size: large;
       }
       .arrow {
-       /*  width: 100%;
+        /*  width: 100%;
         height: 100%; */
         display: flex;
         align-self: center;
@@ -97,7 +90,7 @@
       }
     }
 
-    .options{
+    .options {
       border: 2px solid rgb(191, 191, 191);
       border-radius: 0.6rem;
       background-color: white;
@@ -128,7 +121,6 @@
         /* background-color: white; */
         padding: 0.5rem;
       }
-
     }
     .options:not(.active) {
       z-index: -1;

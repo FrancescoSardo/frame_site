@@ -14,10 +14,7 @@ export function degToRad(deg: number) {
   return deg * (Math.PI / 180);
 }
 
-export async function generateScene(container: HTMLElement, gltf_path: string) {
-  let item: Object3D;
-
-  let loader = new GLTFLoader();
+export async function createScene(container: HTMLElement) {
 
   const scene = new Scene();
 
@@ -36,12 +33,6 @@ export async function generateScene(container: HTMLElement, gltf_path: string) {
     container.clientHeight
   );
 
-  let obj = await loader.loadAsync(gltf_path);
-
-  item = obj.scene as Object3D;
-
-  scene.add(item);
-
   camera.position.z = 150;
 
   // add point light
@@ -58,7 +49,26 @@ export async function generateScene(container: HTMLElement, gltf_path: string) {
   return {
     scene,
     camera,
-    renderer,
-    item,
+    renderer
   }
+}
+
+export async function loadObject(gltf_path: string) {
+  let item: Object3D;
+
+  let loader = new GLTFLoader();
+
+  let obj = await loader.loadAsync(gltf_path);
+
+  item = obj.scene as Object3D;
+  
+  return item;
+}
+
+export function loadObjectAsync(gltf_path: string, callback: (obj: Object3D) => void) {
+  let loader = new GLTFLoader();
+
+  loader.load(gltf_path, (obj) => {
+    callback(obj.scene);
+  });
 }

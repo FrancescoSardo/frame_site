@@ -100,6 +100,7 @@
     }
 
     .options {
+      pointer-events: all;
       z-index: 10000;
       transition: opacity 0.2s ease;
       opacity: 1;
@@ -141,6 +142,7 @@
     }
 
     .options:not(.active) {
+      pointer-events: none;
       opacity: 0;
       // display: none;
     }

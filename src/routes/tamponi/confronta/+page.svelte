@@ -3,42 +3,102 @@
   import { goto } from "$app/navigation";
   import { bind, onMount } from "svelte/internal";
 
-    import { ConfInfo, type conftype } from "$lib/data/confronta";
+  import { ConfInfo, type conftype } from "$lib/data/confronta";
   import { Tampone } from "$lib/data/tampone";
+  import { createScene, loadObjectAsync } from "$lib/utils/3D";
+  import type { Object3D } from "three";
 
-  let selected_L : conftype = "Long";
-  let selected_R : conftype = "Long";
+  let selected_L: conftype = "Long";
+  let _selected_L: conftype = "Long";
 
+  let selected_R: conftype = "Long";
+  let _selected_R: conftype = "Long";
 
-  let descD1 : Array<string>;
-  let descD2 : Array<string>;
-   
-  let descL1 : Array<string>;
-  let descL2 : Array<string>;
-  
-  
+  let descD1: Array<string>;
+  let descD2: Array<string>;
 
-  $:{
-    let i = 0;
-      while(Object.values(ConfInfo)[i]){
-        if(Object.values(ConfInfo)[i].label == selected_L){
-          descD1 = Object.values(ConfInfo)[i].descD;
-          descD2 = Object.values(ConfInfo)[i].descT;
-        }
-        if(Object.values(ConfInfo)[i].label == selected_R){
-          descL1 = Object.values(ConfInfo)[i].descD;
-          descL2 = Object.values(ConfInfo)[i].descT;
-        }
-      
-        i++;
-      }
-      console.log(descD1)
-      console.log(descL1)
-    
+  let descL1: Array<string>;
+  let descL2: Array<string>;
+
+  let tamponi3D: { [key in string]: Object3D } = {};
+  let scene_L: THREE.Scene;
+  let scene_R: THREE.Scene;
+  let render_container_L: HTMLDivElement;
+  let render_container_R: HTMLDivElement;
+
+  $: {
+    if(scene_L) {
+      scene_L.remove(tamponi3D[_selected_L]);
+      _selected_L = selected_L;
+      scene_L.add(tamponi3D[_selected_L]);
+    }
   }
-  
-  
 
+  $: {
+    if(scene_R) {
+      scene_R.remove(tamponi3D[_selected_R]);
+      _selected_R = selected_R;
+      scene_R.add(tamponi3D[_selected_R]);
+    }
+  }
+
+  $: {
+    let i = 0;
+    while (Object.values(ConfInfo)[i]) {
+      if (Object.values(ConfInfo)[i].label == selected_L) {
+        descD1 = Object.values(ConfInfo)[i].descD;
+        descD2 = Object.values(ConfInfo)[i].descT;
+      }
+      if (Object.values(ConfInfo)[i].label == selected_R) {
+        descL1 = Object.values(ConfInfo)[i].descD;
+        descL2 = Object.values(ConfInfo)[i].descT;
+      }
+      i++;
+    }
+   
+  }
+
+  onMount(async () => {
+    loadObjectAsync("/solo_tampone.gltf", (obj) => {
+      tamponi3D["Tampone"] = obj;
+      scene_L.add(obj);
+    });
+
+
+    loadObjectAsync("/long.gltf", (obj) => {
+      tamponi3D["Long"] = obj;
+    });
+
+    loadObjectAsync("/plane.gltf", (obj) => {
+      tamponi3D["Plane"] = obj;
+    });
+
+    loadObjectAsync("/shark.gltf", (obj) => {
+      tamponi3D["Shark"] = obj;
+    });
+
+
+    let sceneData_L = await createScene(render_container_L);
+    scene_L = sceneData_L.scene;
+    let renderer_L = sceneData_L.renderer;
+    let camera_L = sceneData_L.camera;
+
+
+    let sceneData_R = await createScene(render_container_R);
+    scene_R = sceneData_R.scene;
+    let renderer_R = sceneData_R.renderer;
+    let camera_R = sceneData_R.camera;
+
+    function animate(time: number) {
+      requestAnimationFrame(animate);
+
+      renderer_L.render(scene_L, camera_L);
+      renderer_R.render(scene_R, camera_R);
+    }
+
+    requestAnimationFrame(animate);
+    /* console.log(marca) */
+  });
 </script>
 
 <div class="confronta">
@@ -51,7 +111,7 @@
   <div class="content">
     <div class="left">
       <Selector
-        bind:selected_L={selected_L}
+        bind:selected_L
         options={[
           {
             label: "Long",
@@ -70,12 +130,11 @@
             value: "Tampone",
           },
         ]}
-        
       />
 
-     <!--  <div class="image">
-        <!-- ////////
-      </div> -->
+      <div class="render_conteiner" bind:this={render_container_L}>
+      
+      </div>
 
       <div class="material-content">
         <div class="material">
@@ -126,31 +185,31 @@
 
     <div class="right">
       <Selector
-      bind:selected_R={selected_R}
-      options={[
-        {
-          label: "Long",
-          value: "Long",
-        },
-        {
-          label: "Shark",
-          value: "Shark",
-        },
-        {
-          label: "Plane",
-          value: "Plane",
-        },
-        {
-          label: "Tampone",
-          value: "Tampone",
-        },
-      ]}
+        bind:selected_R
+        options={[
+          {
+            label: "Long",
+            value: "Long",
+          },
+          {
+            label: "Shark",
+            value: "Shark",
+          },
+          {
+            label: "Plane",
+            value: "Plane",
+          },
+          {
+            label: "Tampone",
+            value: "Tampone",
+          },
+        ]}
       />
 
-     <!--  <div class="image">
+      <!--  <div class="image">
         <!-- //////// 
       </div> -->
-
+      <div class="render_conteiner" bind:this={render_container_R}></div>
       <div class="material-content">
         <div class="material">
           <div class="circle" />
@@ -233,7 +292,7 @@
         justify-content: space-around;
         box-sizing: border-box;
         margin-top: 20px;
-        
+
         height: 150vh;
 
         display: flex;
@@ -241,6 +300,10 @@
         align-items: center;
         flex-direction: column;
         flex: 1;
+        .render_conteiner{
+          width: 100%;
+          height: 20rem;
+        }
         .image {
           min-width: 15rem;
           min-height: 15rem;
@@ -335,15 +398,18 @@
         justify-content: space-around;
         box-sizing: border-box;
         margin-top: 20px;
-        
+
         height: 150vh;
 
         display: flex;
-        
+
         align-items: center;
         flex-direction: column;
         flex: 1;
-        
+        .render_conteiner{
+          width: 100%;
+          height: 20rem;
+        }
         .image {
           min-width: 15rem;
           min-height: 15rem;
@@ -437,8 +503,8 @@
   }
 
   @media (max-width: 768px) {
-    .confronta{
-    /*   .content{
+    .confronta {
+      /*   .content{
         .left{
         height: 200vh;
       }
@@ -446,8 +512,6 @@
         height: 200vh;
       }
       } */
-    
     }
-
   }
 </style>

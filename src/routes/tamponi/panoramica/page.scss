@@ -1,0 +1,45 @@
+
+.in-page{
+  /* background-color: red; */
+  .title{
+    color: black;
+    /* transform: translateY(0vh); */
+    transform: translateX(0vh);
+    transition: all ease-in 2s;
+  }
+  .text{
+    color: grey;
+    transform: translateX(0vh);;
+    transition: all ease-in 2s;
+  }
+  span{
+    text-align: center;
+    color: grey;
+    transition: all ease-in 3s;
+  }
+  
+  .pagina3{
+    display: flex;
+    .right3{
+      flex:  1;
+      color: black;
+    }
+    .left3{
+    color: black;
+    flex: 2;
+    }
+  }
+  .pagina4{
+    .background_model{
+      .manufactoring_container{
+        .left4{
+          color: black;
+        }
+        .right4{
+          color: black;
+        }
+      }
+    }
+  }
+  
+}

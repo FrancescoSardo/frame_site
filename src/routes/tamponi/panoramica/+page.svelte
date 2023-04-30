@@ -2,10 +2,11 @@
   import { goto } from "$app/navigation";
   import video_render from "$lib/assets/video_render.mp4";
   import { top_navbar_active } from "$lib/stores/navbar";
-  import { generateScene } from "$lib/utils/3D";
+  // import { createScene } from "$lib/utils/3D";
   import { onMount, onDestroy } from "svelte";
   import Pagina3 from "./Pagina3.svelte";
-
+  import Pagina4 from "./Pagina4.svelte";
+  import './page.scss'
   let active_page;
 
   $:{
@@ -34,7 +35,7 @@
 
     function animate(time: number) {
       requestAnimationFrame(animate);
-
+      
       // renderer.render(scene, camera);
     }
 
@@ -98,7 +99,9 @@
   <div class="page" id="page3">
     <Pagina3 />
   </div>
-  <div class="page" id="page4">4</div>
+  <div class="page" id="page4">
+    <Pagina4 />
+  </div>
   <div class="page" id="page5">5</div>
   <div class="page" id="page6">6</div>
   <div class="page" id="page7">7</div>
@@ -116,7 +119,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    .page {      
+    .page:not(.in-page){      
       color: white;      
       scroll-snap-align: start;
       width: 100%;
@@ -140,51 +143,12 @@
       }
     }
     
-
-    .in-page{
-      .title{
-        color: black;
-        /* transform: translateY(0vh); */
-        transform: translateX(0vh);
-        transition: all ease-in 2s;
-      }
-      .text{
-        color: grey;
-        transform: translateX(0vh);;
-        transition: all ease-in 2s;
-      }
-      span{
-        text-align: center;
-        color: grey;
-        transition: all ease-in 3s;
-      }
-      #page2.text{
-        color: red;
-      } 
-      .pagina3{
-        .right3{
-          color: black;
-        }
-        .left3{
-        color: black;
-        }
-      }
-      
-    }
   
     .page:first-child {
 
       z-index: -1;
       position: relative;
       overflow: hidden;
-      // border: 5px solid red;
-      /* .test{
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: white;
-        font-size: 5rem;
-      } */
       video {
         width: 100%;
         // max-height: 100%;
