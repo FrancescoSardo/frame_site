@@ -20,7 +20,18 @@
         },
         {
             "mesh" : 1,
-            "name" : "Assieme_tampone_unite"
+            "name" : "Assieme_tampone_unite",
+            "rotation" : [
+                0,
+                0.3253464102745056,
+                0,
+                0.9455949068069458
+            ],
+            "translation" : [
+                -38.550655364990234,
+                -32.58586883544922,
+                20.779006958007812
+            ]
         }
     ],
     "materials" : [
