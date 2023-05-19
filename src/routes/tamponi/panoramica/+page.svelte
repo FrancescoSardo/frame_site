@@ -7,7 +7,10 @@
   import Pagina3 from "./Pagina3.svelte";
   import Pagina4 from "./Pagina4.svelte";
   import './page.scss'
+  import Pagina5 from "./Pagina5.svelte";
+  import { createScene, loadObjectAsync } from "$lib/utils/3D";
   let active_page;
+  import type { Object3D } from "three";
 
   $:{
       let active_page;
@@ -27,22 +30,32 @@
 
   let panoramica_element: HTMLDivElement;
   let render_container: HTMLDivElement;
+  let scene_L: THREE.Scene;
   let last_scroll = 0;
+  let tamponi3D: { [key in string]: Object3D } = {};
 
-  onMount( () => {
+  onMount( async () => {
+    loadObjectAsync("/long.gltf", (obj) => {
+      tamponi3D["long"] = obj;
+      scene_L.add(obj);
+    });
+
 
     // let { renderer, scene, camera } = await generateScene(render_container, "/long.gltf");
-
+    let sceneData_L = await createScene(render_container);
+    let renderer = sceneData_L.renderer;
+    let camera = sceneData_L.camera;
+    scene_L = sceneData_L.scene;
     function animate(time: number) {
       requestAnimationFrame(animate);
       
-      // renderer.render(scene, camera);
+       renderer.render(scene_L, camera);
+       scene_L.rotateY(0.004)
+       
     }
 
     requestAnimationFrame(animate);
   
-
-  // onMount(() => {
    let elements = document.querySelectorAll(".page");
 
    let observer = new IntersectionObserver(
@@ -102,7 +115,9 @@
   <div class="page" id="page4">
     <Pagina4 />
   </div>
-  <div class="page" id="page5">5</div>
+  <div class="page" id="page5">
+    <Pagina5 />
+  </div>
   <div class="page" id="page6">6</div>
   <div class="page" id="page7">7</div>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -119,6 +134,9 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    scroll-snap-type: mandatory;
+/*     scroll-snap-type: y mandatory; */
+
     .page:not(.in-page){      
       color: white;      
       scroll-snap-align: start;
@@ -217,7 +235,7 @@
         justify-content: center;
         align-items: center;
 
-        border: 5px solid red;
+        /* border: 5px solid red; */
 
         canvas {
           max-width: 100%;

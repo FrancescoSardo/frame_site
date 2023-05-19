@@ -1,9 +1,11 @@
 <script>
   import foto from "$lib/assets/foto_manufactor.png";
+  import video_render from "$lib/assets/video_render.mp4";
 </script>
 
 <div class="pagina4">
-  <div class="background_model"> <img src={foto} />
+  <div class="background_model"> <!-- <img src={foto} / -->
+   <!--  <video autoplay muted loop src={video_render} /> -->
     <div class="manufactoring_container">
       <div class="left4">
         <div class="title">Manufactoring</div>
@@ -41,6 +43,15 @@
       width: 100%;
       height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2));
       position: sticky;
+    /*   video{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit:fill;
+        opacity: 50%;
+      } */
       img {
         position: absolute;
         top: 30%;
@@ -48,6 +59,7 @@
         object-fit:fill;
         opacity: 90%;
       }
+
       .manufactoring_container {
         display: flex;
         height: 100%;
@@ -88,6 +100,7 @@
           align-items: center;
           gap: 6rem;
           .text{
+            text-align: end;
             font-size: x-large;
             transition: all ease-in 2s;
           }
@@ -109,6 +122,12 @@
   @media (max-width: 768px) {
     .pagina4{
       .background_model{
+        img{
+          width: 100%;
+          top: 40%;
+        
+          opacity: 0%;
+        }
       .manufactoring_container{
         .left4{
           .text{
@@ -121,6 +140,7 @@
         .right4{
           .text{
             font-size: medium;
+            
           }
         }
       }

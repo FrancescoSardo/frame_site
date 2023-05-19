@@ -60,16 +60,19 @@
 
   onMount(async () => {
     loadObjectAsync("/solo_tampone.gltf", (obj) => {
+      scene_L.remove(tamponi3D["Tampone"]);
       tamponi3D["Tampone"] = obj;
       scene_L.add(obj);
     });
 
 
     loadObjectAsync("/long.gltf", (obj) => {
+      scene_L.remove(tamponi3D["Long"]);
       tamponi3D["Long"] = obj;
     });
 
     loadObjectAsync("/plane.gltf", (obj) => {
+      scene_L.remove(tamponi3D["Plane"]);
       tamponi3D["Plane"] = obj;
     });
 

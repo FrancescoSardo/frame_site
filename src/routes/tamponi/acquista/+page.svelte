@@ -16,15 +16,18 @@
   import {
     AppendiceTamponeInfo,
     IncisioneTamponeInfo,
-    ModelloTamponeInfo,
+ /*    ModelloTamponeInfo, */
     type AppendiceTamponeType,
     type ModelloTamponeType,
   } from "$lib/data/tampone";
   import { ANNO, MARCHE, MODELLO, Model_db } from "$lib/data/selezione-modello";
 
+
+
   import ModelSelector from "$lib/components/ModelSelector.svelte";
   import { bind } from "svelte/internal";
   import type { Object3D } from "three";
+  import { get } from "svelte/store";
 
   export let data: PageData;
   let render_container: HTMLDivElement;
@@ -36,6 +39,9 @@
   let marca: string = "";
   let modello: string = "";
   let anno: string = "";
+  let model_active = false;
+  let model_selected = -1;
+  let modello_appendice: string = "";
 
   let lista_modelli = Model_db;
 
@@ -66,7 +72,8 @@
     goto("/frame_site/carrello");
   }
 
-  function select_appendice(appendice: string) {
+  function select_appendice(appendice: string, appendice_label:string) {
+    modello_appendice = appendice_label;
     if (appendice in AppendiceTamponeInfo) {
       scene.remove(tamponi3D[tampone.appendice]);
       scene.add(tamponi3D[appendice as AppendiceTamponeType]);
@@ -76,28 +83,38 @@
     }
   }
 
-  function select_model(model: string) {
-    if (model in ModelloTamponeInfo) {
-      tampone.modello = model as ModelloTamponeType;
+  function select_model(model_complete: string) {
+    if (model_complete) {
+      tampone.modello = model_complete;
       tampone = tampone;
     }
+  }
+  function clearScene(){
+    scene.remove(tamponi3D[tampone.appendice]);
+    scene.remove(tamponi3D["long"]);
+    scene.remove(tamponi3D["dip"]);
+    scene.remove(tamponi3D["squalo"]);
   }
 
   onMount(async () => {
     loadObjectAsync("/solo_tampone.gltf", (obj) => {
+      clearScene();
       tamponi3D["nessuna"] = obj;
       scene.add(tamponi3D["nessuna"]);
     });
 
     loadObjectAsync("/long.gltf", (obj) => {
+      clearScene();
       tamponi3D["long"] = obj;
     });
 
     loadObjectAsync("/plane.gltf", (obj) => {
+      clearScene();
       tamponi3D["dip"] = obj;
     });
 
     loadObjectAsync("/shark.gltf", (obj) => {
+      clearScene();
       tamponi3D["squalo"] = obj;
     });
 
@@ -124,6 +141,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="acquista">
   <Galleria
+    modello_appendice={modello_appendice}
     close_gallery={() => {
       gallery_active = false;
     }}
@@ -181,7 +199,7 @@
           label={appendice.label}
           cost={appendice.costo}
           selected={key === tampone.appendice}
-          onClick={() => select_appendice(key)}
+          onClick={() => select_appendice(key, appendice.label)}
         />
       {/each}
       <div class="divider" />
@@ -204,17 +222,19 @@
       <div class="listamodelli">
         {#each lista_modelli as lista, index}
           <div
-            class="item_"
+            class="item_" 
+            class:model_active
             on:click={() => {
-              //selected = index;
+              model_selected = index;
               //active = false;
-              /* ------------------------------- */
+              model_active = !model_active;
+              select_model(lista.modello + " " + lista.marca + " " + lista.anno)
             }}
           >
             {lista.marca}
             {lista.modello}
             {lista.anno}
-          </div>
+          </div>  
           <!-- {#if lista.length < -1}
             <div class="divider" />
           {/if} -->
@@ -420,6 +440,13 @@
             border: solid white 2px;
           }
           .item_:hover {
+            transition: border ease 0.5s;
+
+            border-width: 2px;
+            border-color: #0085ff;
+            cursor: pointer;
+          }
+          .item_.model_active {
             transition: border ease 0.5s;
 
             border-width: 2px;

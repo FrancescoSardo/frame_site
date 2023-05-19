@@ -4,7 +4,7 @@ import { writable, type Writable } from "svelte/store";
 
 export type ShopStoreType = Tampone
 
-let shop: Tampone = new Tampone("", "nessuna" , "r6")
+let shop: Tampone = new Tampone("", "nessuna" , "paperino")
 
 export const shop_store: Writable<ShopStoreType> = writable(shop);
 

@@ -6,20 +6,20 @@ export const AppendiceTamponeInfo: {
 } = {
   nessuna: { label: "Nessuna", costo: 0 },
   squalo: { label: "Squalo", costo: 10 },
-  dip: { label: "Dip", costo: 20 },
+  dip: { label: "Plane", costo: 20 },
   long: { label: "Long", costo: 30 }
 }
 
-export type ModelloTamponeType = "r6" | "duke" | "mt"
-export const ModelloTamponeInfo: {
-  [key in ModelloTamponeType]: {
-    label: string, costo: number
-  }
-} = {
-  r6: { label: "R6", costo: 0 },
-  duke: { label: "Duke", costo: 0 },
-  mt: { label: "MT", costo: 0 }
-}
+ export type ModelloTamponeType = string
+// export const ModelloTamponeInfo: {
+//   [key in ModelloTamponeType]: {
+//     label: string, costo: number
+//   }
+// } = {
+//   r6: { label: "R6", costo: 0 },
+//   duke: { label: "Duke", costo: 0 },
+//   mt: { label: "MT", costo: 0 }
+// }
 
 export type IncisioneTamponeType = string
 export const IncisioneTamponeInfo = (incisione: string): { label: string, costo: number } => {
@@ -47,7 +47,7 @@ export class Tampone {
     prezzo += this.incisione === "" ? 0 : 20;
 
     prezzo += AppendiceTamponeInfo[this.appendice].costo
-    prezzo += ModelloTamponeInfo[this.modello].costo;
+    //prezzo += ModelloTamponeInfo[this.modello].costo;
 
     return prezzo;
   }

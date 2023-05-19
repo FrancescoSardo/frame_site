@@ -1,18 +1,55 @@
 <script lang="ts">
-  import foto_render from "$lib/assets/foto_render.png";
-  import reneder_shark from "$lib/assets/render_shark.png";
+  import  Long1  from "$lib/assets/img/Long/Long_frontale_NO_SFONDO.png";
+  import  Long2  from "$lib/assets/img/Long/Long_laterale_NO_SFONDO.png";
+  import  Long3  from "$lib/assets/img/Long/Long_tre_quarti_NO_SFONDO.png";
+  import  Plane1  from "$lib/assets/img/Plane/Plane_frontale_NO_SFONDO.png";
+  import  Plane2  from "$lib/assets/img/Plane/Plane_laterale_NO_SFONDO.png";
+  import  Plane3  from "$lib/assets/img/Plane/Plane_tre_quarti_NO_SFONDO.png";
 
-  let gallery_images = [
-    foto_render,
-    reneder_shark,
-    foto_render,
-    reneder_shark,
-    foto_render,
-  ];
+  import  Shark1  from "$lib/assets/img/Shark/Shark_frontale_NO_SFONDO.png";
+  import  Shark2  from "$lib/assets/img/Shark/Shark_laterale_NO_SFONDO.png";
+  import  Shark3  from "$lib/assets/img/Shark/Shark_tre_quarti_NO_SFONDO.png";
+
+
+
   let gallery_index = 0;
-
+  export let modello_appendice = "";
   export let gallery_active = false;
   export let close_gallery: () => void
+  let gallery_images: string | any[];
+
+  $:{
+  
+    switch(modello_appendice) {
+    case "Plane":
+    gallery_images = [
+      Plane1,
+      Plane2,
+      Plane3,
+    ];
+      break;
+    case "Long":
+      gallery_images = [
+      Long1,
+      Long2,
+      Long3,
+    ];
+      break;
+    case "Squalo":
+      gallery_images = [
+      Shark1,
+      Shark2,
+      Shark3,
+      ];
+      break;
+
+    default:
+      gallery_images = [
+      
+      ];
+  }
+  }
+
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
