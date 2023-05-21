@@ -5,17 +5,17 @@
     color: black;
     /* transform: translateY(0vh); */
     transform: translateX(0vh);
-    transition: all ease-in 2s;
+    transition: all ease-in 0.5s;
   }
   .text{
     color: grey;
     transform: translateX(0vh);;
-    transition: all ease-in 2s;
+    transition: all ease-in 0.5s;
   }
   span{
     text-align: center;
     color: grey;
-    transition: all ease-in 3s;
+    transition: all ease-in 0.5s;
   }
   
   .pagina3{
@@ -33,10 +33,19 @@
     .background_model{
       .manufactoring_container{
         .left4{
-          color: black;
+          .title{
+            color: black;
+          }
+          .text{
+            color: black;
+          }
+          
         }
         .right4{
-          color: black;
+          .text{
+            color: black;
+          }
+          
         }
       }
     }
@@ -45,9 +54,28 @@
     .text1{
       color: black;
       transform: translateX(0vh);
-      transition: all ease-in 2s;
+      transition: all ease-in 0.5s;
       
     }
   
   
+    .pagina6{
+      display: none;
+      .left6{}
+      .right6{
+        .top6{
+          .title6{
+            color: Black;
+          }
+          .desc6{
+            color: black;
+          }
+        }
+        .bottom{
+          
+        }
+      }
+    
+    }
+
 }

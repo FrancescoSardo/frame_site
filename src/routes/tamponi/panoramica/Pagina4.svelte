@@ -5,7 +5,7 @@
 
 <div class="pagina4">
   <div class="background_model"> <!-- <img src={foto} / -->
-   <!--  <video autoplay muted loop src={video_render} /> -->
+    <video  muted loop src={video_render} />
     <div class="manufactoring_container">
       <div class="left4">
         <div class="title">Manufactoring</div>
@@ -43,7 +43,7 @@
       width: 100%;
       height: calc(var(--vh, 1vh) * 100 - var(--navbar-height-2));
       position: sticky;
-    /*   video{
+      video{
         position: absolute;
         top: 0;
         left: 0;
@@ -51,7 +51,7 @@
         height: 100%;
         object-fit:fill;
         opacity: 50%;
-      } */
+      }
       img {
         position: absolute;
         top: 30%;
@@ -67,7 +67,7 @@
           padding: 1rem;
           /* border: 2px solid black; */
           flex: 1;
-          color: white;
+          color: transparent;
           transition: all ease-in 1s;
           display: flex;
           flex-direction: column;
@@ -93,7 +93,7 @@
           padding: 1rem;
           /* border: 2px solid black; */
           flex: 1;
-          color: white;
+          color: transparent;
           transition: all ease-in 1s;
           display: flex;
           flex-direction: column;

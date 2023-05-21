@@ -11,6 +11,7 @@
   import { createScene, loadObjectAsync } from "$lib/utils/3D";
   let active_page;
   import type { Object3D } from "three";
+  import Pagina6 from "./Pagina6.svelte";
 
   $:{
       let active_page;
@@ -118,7 +119,9 @@
   <div class="page" id="page5">
     <Pagina5 />
   </div>
-  <div class="page" id="page6">6</div>
+  <div class="page" id="page6">
+    <Pagina6 />
+  </div>
   <div class="page" id="page7">7</div>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="float-acquista mobile-only"  on:click={() => {
@@ -138,13 +141,13 @@
 /*     scroll-snap-type: y mandatory; */
 
     .page:not(.in-page){      
-      color: white;      
+      color: transparent;      
       scroll-snap-align: start;
       width: 100%;
       box-sizing: border-box;
       transition: all ease-in 4s;
       .text{
-        color: white;
+        color: transparent;
         transform: translateX(5vh);
         transition: all ease-in 4s;
       }
@@ -155,7 +158,7 @@
       }
       span{
         text-align: center;
-        color: white;
+        color: transparent;
         transform: translateY(5vh);
         transition: all ease-in 4s;
       }

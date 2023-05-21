@@ -24,7 +24,7 @@
       font-size: 10rem;
 
       /* transform: translateX(-10vh); */
-      transition: all ease-in 4s;
+      transition: all ease-in 1s;
       
     }
     span[id=ttt] {
