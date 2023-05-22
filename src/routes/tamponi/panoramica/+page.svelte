@@ -36,7 +36,7 @@
   let tamponi3D: { [key in string]: Object3D } = {};
 
   onMount( async () => {
-    loadObjectAsync("/long.gltf", (obj) => {
+    loadObjectAsync("/static/long.gltf", (obj) => {
       tamponi3D["long"] = obj;
       scene_L.add(obj);
     });
