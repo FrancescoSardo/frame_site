@@ -23,6 +23,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-auto": "^2.1.1",
+		"@sveltejs/adapter-vercel": "^3.0.3",
 		"gh-pages": "^5.0.0",
 		"sass": "^1.58.3",
 		"three": "^0.150.1"
