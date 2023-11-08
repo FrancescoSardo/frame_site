@@ -12,7 +12,7 @@
   let active_page;
   import type { Object3D } from "three";
   import Pagina6 from "./Pagina6.svelte";
-
+  
   $:{
       let active_page;
     }
