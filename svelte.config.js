@@ -11,6 +11,10 @@ const config = {
 
 	kit: {
     adapter: vercel(),
+    // base path for static assets
+    paths: {
+      base: '/'
+    },
 	}
 };
 
