@@ -13,7 +13,7 @@ const config = {
     adapter: vercel(),
     // base path for static assets
     paths: {
-      base: '/'
+      base: '/frame_site'
     },
 	}
 };
