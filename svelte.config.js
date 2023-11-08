@@ -12,9 +12,9 @@ const config = {
 	kit: {
     adapter: adapter(),
     // base path for static assets
-    /* paths: {
+    paths: {
       base: '/frame_site'
-    }, */
+    },
 	}
 };
 
