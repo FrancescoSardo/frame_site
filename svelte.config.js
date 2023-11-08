@@ -11,6 +11,9 @@ const config = {
 
 	kit: {
     adapter: vercel(),
+    paths: {
+      base: '/frame_site',
+    },
 	}
 };
 
